@@ -1,6 +1,6 @@
-#username - Dor Bourshan
+#username - dorbourshan
 #id1      - ***REMOVED***
-#name1    - complete info 
+#name1    - Dor Bourshan
 #id2      - ***REMOVED***
 #name2    - Jonathan Yahav
 
