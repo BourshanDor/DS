@@ -6,6 +6,7 @@
 
 
 
+
 """A class represnting a node in an AVL tree"""
 
 class AVLNode(object):
@@ -62,7 +63,7 @@ class AVLNode(object):
 	@returns: the height of self, -1 if the node is virtual
 	"""
 	def getHeight(self):
-		return -1 if self.value is None else max(self.left, self.right) + 1
+		return -1 if self.value is None else max(self.left.getHeight(), self.right.getHeight()) + 1
 
 	"""returns the size
 	
@@ -70,7 +71,7 @@ class AVLNode(object):
 	@returns: the size of self, 0 if the node is virtual
 	"""
 	def getSize(self):
-		return 0 if self.getValue() is None else self.left.size + self.right.size + 1
+		return 0 if self.getValue() is None else self.left.getSize() + self.right.getSize() + 1
 
 
 	"""sets left child
