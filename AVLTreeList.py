@@ -152,6 +152,8 @@ class AVLTreeList(object):
 	def __init__(self):
 		self.root = None
 		# add your fields here
+		#length ?
+
 
 
 	"""returns whether the list is empty
@@ -160,7 +162,7 @@ class AVLTreeList(object):
 	@returns: True if the list is empty, False otherwise
 	"""
 	def empty(self):
-		return None
+		return True if self.root is None else False
 
 
 	"""retrieves the value of the i'th item in the list
@@ -172,7 +174,25 @@ class AVLTreeList(object):
 	@returns: the the value of the i'th item in the list
 	"""
 	def retrieve(self, i):
-		return None
+		j = i + 1
+		explore = self.root
+		counter = explore.getLeft().getSize() + 1
+
+		while j != counter:
+			if j < counter:
+				explore = explore.getLeft()
+				counter = explore.getLeft().getSize() + 1
+
+			else:
+				j = j - counter
+				explore = explore.getRight()
+				counter = explore.getLeft().getSize() + 1
+
+		return explore.getValue
+
+
+
+
 
 	"""inserts val at position i in the list
 
