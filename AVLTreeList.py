@@ -156,7 +156,7 @@ class AVLTreeList(object):
 
 	"""
 	def __init__(self):
-		self.root = None
+		self.root = AVLNode(None); #TODO: change to correct init value
 		# add your fields here
 		#length ?
 
@@ -169,8 +169,9 @@ class AVLTreeList(object):
 	"""returns whether the list is empty
 
 	@rtype: bool
-	@returns: True if the list is empty, False otherwise
+	@returns: True if the list is empty, False otherwise 
 	"""
+	#TODO: Update according to how we check if node is virtual...
 	def empty(self):
 		return True if self.root is None else False
 
@@ -198,10 +199,7 @@ class AVLTreeList(object):
 				explore = explore.getRight()
 				counter = explore.getLeft().getSize() + 1
 
-		return explore.getValue
-
-
-
+		return explore.getValue()
 
 
 	"""inserts val at position i in the list
@@ -236,7 +234,12 @@ class AVLTreeList(object):
 	@returns: the value of the first item, None if the list is empty
 	"""
 	def first(self):
-		return None
+		if self.empty():
+			return None
+		next_left = self.root.getLeft()
+		while next_left.isRealNode():
+			next_left = next_left.getLeft()
+		return next_left.getParent()
 
 	"""returns the value of the last item in the list
 
@@ -244,7 +247,12 @@ class AVLTreeList(object):
 	@returns: the value of the last item, None if the list is empty
 	"""
 	def last(self):
-		return None
+		if self.empty():
+			return None
+		next_right = self.root.getRight();
+		while next_right.isRealNode():
+			next_right = next_right.getRight();
+		return next_right.getParent();
 
 	"""returns an array representing list 
 
@@ -260,7 +268,7 @@ class AVLTreeList(object):
 	@returns: the size of the list
 	"""
 	def length(self):
-		return None
+		return self.root.getSize()
 
 	"""splits the list at the i'th index
 
@@ -272,6 +280,7 @@ class AVLTreeList(object):
 	right is an AVLTreeList representing the list from index i+1, and val is the value at the i'th index.
 	"""
 	def split(self, i):
+		# TODO: look at Tree-Select in lecture 4 PowerPoint
 		return None
 
 	"""concatenates lst to self
@@ -292,6 +301,10 @@ class AVLTreeList(object):
 	@returns: the first index that contains val, -1 if not found.
 	"""
 	def search(self, val):
+		# Idea: maintain a standard AVL tree
+		# with the values of the list-tree as keys
+		# and with pointers to the list nodes as values.
+		# FIXME: Awaiting forum response
 		return None
 
 
