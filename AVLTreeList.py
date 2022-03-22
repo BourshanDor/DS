@@ -4,7 +4,7 @@
 #id2      - ***REMOVED***
 #name2    - Jonathan Yahav
 
-
+from printree import *
 
 
 """A class represnting a node in an AVL tree"""
@@ -23,7 +23,13 @@ class AVLNode(object):
 		self.parent = None
 		self.height = -1 if value is None else 0
 		self.size = 0 if value is None else 1
-		
+
+
+	"""printable representation of the AVLNode.
+	"""
+	def __repr__(self):
+		return self.getValue()
+
 
 	"""returns the left child
 	@rtype: AVLNode
@@ -154,7 +160,11 @@ class AVLTreeList(object):
 		# add your fields here
 		#length ?
 
-
+	def __repr__(self):
+		out = ""
+		for row in printree(self.root, False):  # need printree.py file
+			out = out + row + "\n"
+		return out
 
 	"""returns whether the list is empty
 

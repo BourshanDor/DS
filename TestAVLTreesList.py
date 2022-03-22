@@ -1,5 +1,5 @@
 import unittest
-from AVLTreeList import AVLNode
+from AVLTreeList import *
 
 
 class TestAVLTreesList(unittest.TestCase):
@@ -34,6 +34,14 @@ class TestAVLTreesList(unittest.TestCase):
 
         self.assertEqual(tree_node2.getParent(), tree_node1)
 
+    def test_repr(self):
+        node = AVLNode('1')
+        node.setRight(AVLNode('2'))
+        node.setLeft(AVLNode('2'))
+        tr = AVLTreeList()
+        tr.root = node
+
+        #print(tr)
 
 
 
