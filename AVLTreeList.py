@@ -6,26 +6,25 @@
 
 from printree import *
 
-
-
-
-
 """A class represnting a node in an AVL tree"""
 
 class AVLNode(object) :
-	"""Constructor, you are allowed to add more fields. 
+	"""Constructor, you are allowed to add more fields.
 
 	@type value: str
 	@param value: data of your node
 	"""
+	@property
+	def NO_STRING(self):
+		return -1
 
 	def __init__(self, value):
 		self.value = value
-		self.left = None if value is None else AVLNode(None)
-		self.right = None if value is None else AVLNode(None)
+		self.left = None if value == AVLNode.NO_STRING else AVLNode(AVLNode.NO_STRING)
+		self.right = None if value == AVLNode.NO_STRING else AVLNode(AVLNode.NO_STRING)
 		self.parent = None
-		self.height = -1 if value is None else 0
-		self.size = 0 if value is None else 1
+		self.height = -1 if value == AVLNode.NO_STRING else 0
+		self.size = 0 if value == AVLNode.NO_STRING else 1
 
 
 	"""printable representation of the AVLNode.
@@ -75,7 +74,7 @@ class AVLNode(object) :
 
 	# TODO: Remember to update in insert function
 	def getHeight(self):
-		return -1 if not self.isRealNode() else max(self.getRight().getHeight(),self.getLeft().getHeight()) + 1
+		return -1 if not self.isRealNode() else max(self.getRight().getHeight(), self.getLeft().getHeight()) + 1
 
 	"""returns the size
 	
@@ -83,7 +82,7 @@ class AVLNode(object) :
 	@returns: the size of self, 0 if the node is virtual
 	"""
 	def getSize(self):
-		return 0 if self.getValue() is None else self.left.getSize() + self.right.getSize() + 1
+		return 0 if not self.isRealNode() else self.left.getSize() + self.right.getSize() + 1
 
 
 	"""return the balance factor of node, AVLTrees def that every node fulfill |BF(v)| <= 1 
@@ -156,9 +155,7 @@ class AVLNode(object) :
 	@returns: False iff self is a virtual node.
 	"""
 	def isRealNode(self):
-		return not (self.value is None and self.getLeft() is None and self.getRight() is None)
-
-
+		return not (self.value == AVLNode.NO_STRING and self.getLeft() is None and self.getRight() is None)
 
 	"""return the balance factor of node, AVLTrees def that every node fulfill |BF(v)| <= 1 
 
@@ -170,35 +167,66 @@ class AVLNode(object) :
 
 	"""The successor of the node v is the item following v in the list. 
 	
-	@rtype
+	@rtype: AVLNode || None
 	"""
 	def successor(self):
-
-		v = self
-		right_child = self.getRight()
-		father = self.getParent()
-
-		if right_child.isRealNode():
-			while right_child.isRealNode():
-				v = right_child
-				right_child = right_child.getLeft()
-			return v
-
-		else:
-			if father is not None:
-				while father is not None and father.getLeft is not v:
-					v = father
-					father = father.getParent()
-				return None if father is None else v
-
-		return None
+		return self.getPredecessorOrSuccessor(True)
 
 	"""The predecessor of the node v is the item before v in the list. 
-
-		@rtype
-		"""
+	
+	@rtype: AVLNode || None
+	"""
 	def predecessor(self):
-		return None
+		return self.getPredecessorOrSuccessor(False)
+
+	"""
+	Add docs
+	"""
+	def getPredecessorOrSuccessor(self, getSuccessor):
+		v = self
+		child = self.getRight() if getSuccessor else self.getLeft()
+		par = self.getParent()
+
+		if child.isRealNode():
+			while child.isRealNode():
+				v = child
+				child = child.getLeft() if getSuccessor else child.getRight()
+			return v
+
+		while par is not None and par.predicate(v, getSuccessor):
+			v = par
+			par = par.getParent()
+		return par
+
+	"""
+	Add docs
+	"""
+	def predicate(self, origin, getSuccessor):
+		return self is not None and \
+				(getSuccessor and (self.getLeft() is not origin)) or \
+				(not getSuccessor and (self.getRight() is not origin))
+
+	"""
+	Recalculates node's height and size, used after changes in tree.
+	O(1) runtime complexity since both fields are calculated in constant time
+	based only on direct children of the node.
+	"""
+	def recalculate(self):
+		self.setSize(self.getSize())
+		self.setHeight(self.getHeight())
+
+	"""
+	Checks if node is to its parent's right or left
+	@rtype int
+	@returns 0 if no parent, 1 if right, -1 if left
+	"""
+	def checkParentSide(self):
+		par = self.getParent()
+		if par is None:
+			return 0
+		if par.getRight() is self:
+			return 1
+		return -1
 
 
 
@@ -216,24 +244,19 @@ class AVLTreeList(object):
 		self.root = AVLNode(None); #TODO: change to correct init value
 		# add your fields here
 
-
 	def __repr__(self):
 		out = ""
 		for row in printree(self.root, False):  # need printree.py file
 			out = out + row + "\n"
 		return out
 
-
-
 	"""returns whether the list is empty
 
 	@rtype: bool
 	@returns: True if the list is empty, False otherwise 
 	"""
-	#TODO: Update according to how we check if node is virtual...
 	def empty(self):
-		return True if self.root is None else False
-
+		return not self.root.isRealNode()
 
 	"""retrieves the value of the i'th item in the list
 
@@ -244,7 +267,6 @@ class AVLTreeList(object):
 	@returns: the the value of the i'th item in the list
 	"""
 	def retrieve(self, i):
-
 		return self.retrieveByIndex(i).getValue()
 
 
@@ -261,8 +283,6 @@ class AVLTreeList(object):
 	def insert(self, i, val):
 		return -1
 
-
-
 	"""deletes the i'th item in the list
 
 	@type i: int
@@ -273,7 +293,6 @@ class AVLTreeList(object):
 	"""
 	def delete(self, i):
 		return -1
-
 
 	"""returns the value of the first item in the list
 
@@ -296,10 +315,10 @@ class AVLTreeList(object):
 	def last(self):
 		if self.empty():
 			return None
-		next_right = self.root.getRight();
+		next_right = self.root.getRight()
 		while next_right.isRealNode():
-			next_right = next_right.getRight();
-		return next_right.getParent();
+			next_right = next_right.getRight()
+		return next_right.getParent()
 
 	"""returns an array representing list 
 
@@ -351,10 +370,8 @@ class AVLTreeList(object):
 		# Idea: maintain a standard AVL tree
 		# with the values of the list-tree as keys
 		# and with pointers to the list nodes as values.
-		# FIXME: Awaiting forum response
+		# TODO: Implement (forum says this is allowed)
 		return None
-
-
 
 	"""returns the root of the tree representing the list
 
@@ -364,9 +381,8 @@ class AVLTreeList(object):
 	def getRoot(self):
 		return self.root if self.root.isRealNode() else None
 
-
-	def setRoot(self, Anode):
-		self.root = Anode
+	def setRoot(self, newNode):
+		self.root = newNode
 
 	"""retrieve pointer to the node in the list on index i 
 	
@@ -374,7 +390,7 @@ class AVLTreeList(object):
 	@pre: 0 <= i < self.length()
 	@param i: The intended index in the list 
 	@rtype: AVLNode
-	@return: pointer to the node in the list on index i 
+	@return: pointer to the node in the list at index i 
 	"""
 	def retrieveByIndex(self, i):
 		j = i + 1
@@ -393,23 +409,26 @@ class AVLTreeList(object):
 
 		return explore
 
-	"""node is criminal 
+	def rotate(self, B):
+		selfBF, rightBF, leftBF = B.getBF(), B.getRight().getBF(), B.getLeft().getBF()
+		if (selfBF > 1):
+			if (leftBF > 0):
+				self.rotateRight(B)
+			else:
+				self.rotateLeftRight(B)
+		if (selfBF < -1):
+			if (rightBF < 0):
+				self.rotateLeft(B)
+			else:
+				self.rotateRightLeft(B)
+
+	""" 
 	"""
-
-	def rightRotation(tr, B):
-
-		toPoint = 0
-		par = B.getParent()
-		if par is not None:
-			if B is par.getLeft():
-				toPoint = -1
-			if B is par.getRight():
-				toPoint = 1
+	def rotateRight(self, B):
+		toPoint = B.checkParentSide()
 
 		A = B.getLeft()
-		B_r = B.getRight()
 		A_r = A.getRight()
-		A_l = A.getLeft()
 		BParent = B.getParent()
 
 		B.setLeft(A_r)
@@ -422,15 +441,16 @@ class AVLTreeList(object):
 		elif toPoint == -1:
 			A.getParent().setLeft(A)
 		else:
-			tr.setRoot(A)
+			self.setRoot(A)
 
-		B.setSize(B.getSize())
-		A.setSize(A.getSize())
-		B.setHeight(B.getHeight())
-		A.setHeight(A.getHeight())
+		B.recalculate()
+		A.recalculate()
 
+	def rotateLeft(self, B):
+		return None
 
+	def rotateLeftRight(self, B):
+		return None
 
-
-
-
+	def rotateRightLeft(self, B):
+		return None

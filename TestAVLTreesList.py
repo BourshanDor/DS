@@ -6,7 +6,7 @@ from AVLTreeList import *
 class TestAVLTreesList(unittest.TestCase):
     def test_isRealNode(self):
         #self.assertEqual(common, desirable)
-        tree_node1 = AVLNode(None)
+        tree_node1 = AVLNode(AVLNode.NO_STRING)
         tree_node2 = AVLNode('a')
         self.assertEqual(tree_node1.isRealNode(), False)
         self.assertEqual(tree_node2.isRealNode(), True)
@@ -22,7 +22,7 @@ class TestAVLTreesList(unittest.TestCase):
 
     def test_getSize(self):
         #self.assertEqual(common, desirable)
-        tree_node1 = AVLNode(None)
+        tree_node1 = AVLNode(AVLNode.NO_STRING)
         tree_node2 = AVLNode('a')
         self.assertEqual(tree_node1.getSize(), 0)
         self.assertEqual(tree_node2.getSize(), 1)
@@ -42,24 +42,45 @@ class TestAVLTreesList(unittest.TestCase):
         tr = AVLTreeList()
         tr.root = node
 
-        #print(tr)
+
     def test_right_rotation(self):
         B = AVLNode("B")
-        B.setHeight(2)
         A = AVLNode("A")
-        A.setHeight(1)
+        R = AVLNode("R")
+        L = AVLNode("L")
+        R.setParent(B)
         A.setParent(B)
+        L.setParent(A)
+        A.setLeft(L)
         v = AVLNode("v")
-        v.setParent(A)
+        L.setLeft(v)
+        v.setParent(L)
         B.setLeft(A)
-        A.setLeft(v)
+        B.setRight(R)
+        K = AVLNode("K")
+        K.setParent(A)
+        A.setRight(K)
         tr = AVLTreeList()
         tr.root = B
+        #print(tr)
+
+        tr.rotateRight(B)
+
         print(tr)
 
-        tr.rightRotation(B)
+        pointer = v
+        print("####### IN ORDER ######")
+        while pointer:
+            print(pointer)
+            pointer = pointer.successor()
+        print(R.successor())
 
-        print(tr)
+        print("####### REVERSE ORDER ######")
+        pointer = R
+        while pointer:
+            print(pointer)
+            pointer = pointer.predecessor()
+        print(v.predecessor())
 
 
 
