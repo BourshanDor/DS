@@ -42,6 +42,21 @@ class TestAVLTreesList(unittest.TestCase):
         tr.root = node
 
         #print(tr)
+    def test_right_rotation(self):
+        B = AVLNode("B")
+        A = AVLNode("A")
+        A.setParent(B)
+        v = AVLNode("v")
+        v.setParent(A)
+        B.setLeft(A)
+        A.setLeft(v)
+        tr = AVLTreeList()
+        tr.root = B
+        print(tr)
+
+        tr.rightRotation(B)
+
+        print(tr)
 
 
 

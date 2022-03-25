@@ -9,7 +9,7 @@ from printree import *
 
 """A class represnting a node in an AVL tree"""
 
-class AVLNode(object):
+class AVLNode(object) :
 	"""Constructor, you are allowed to add more fields. 
 
 	@type value: str
@@ -67,9 +67,12 @@ class AVLNode(object):
 
 	@rtype: int
 	@returns: the height of self, -1 if the node is virtual
+	
 	"""
+
+	# TODO: Remember to update in insert function
 	def getHeight(self):
-		return -1 if self.value is None else max(self.left.getHeight(), self.right.getHeight()) + 1
+		return self.height
 
 	"""returns the size
 	
@@ -169,13 +172,13 @@ class AVLNode(object):
 	def successor(self):
 
 		v = self
-		right_son = self.getRight()
+		right_child = self.getRight()
 		father = self.getParent()
 
-		if right_son.isRealNode():
-			while right_son.isRealNode():
-				v = right_son
-				right_son = right_son.getLeft()
+		if right_child.isRealNode():
+			while right_child.isRealNode():
+				v = right_child
+				right_child = right_child.getLeft()
 			return v
 
 		else:
@@ -209,13 +212,15 @@ class AVLTreeList(object):
 	def __init__(self):
 		self.root = AVLNode(None); #TODO: change to correct init value
 		# add your fields here
-		#length ?
+
 
 	def __repr__(self):
 		out = ""
 		for row in printree(self.root, False):  # need printree.py file
 			out = out + row + "\n"
 		return out
+
+
 
 	"""returns whether the list is empty
 
@@ -252,6 +257,7 @@ class AVLTreeList(object):
 	"""
 	def insert(self, i, val):
 		return -1
+
 
 
 	"""deletes the i'th item in the list
@@ -353,8 +359,11 @@ class AVLTreeList(object):
 	@returns: the root, None if the list is empty
 	"""
 	def getRoot(self):
-		return None
+		return self.root if self.root.isRealNode() else None
 
+
+	def setRoot(self, Anode):
+		self.root = Anode
 
 	"""retrieve pointer to the node in the list on index i 
 	
@@ -380,4 +389,39 @@ class AVLTreeList(object):
 				counter = explore.getLeft().getSize() + 1
 
 		return explore
+
+	"""node is criminal 
+	"""
+
+	def rightRotation(tr, B):
+
+		toPoint = 0
+		par = B.getParent()
+		if par is not None:
+			if B is par.getLeft():
+				toPoint = -1
+			if B is par.getRight():
+				toPoint = 1
+
+		A = B.getLeft()
+		B_r = B.getRight()
+		A_r = A.getRight()
+		A_l = A.getLeft()
+		BParent = B.getParent()
+
+		B.setLeft(A_r)
+		A.setParent(B)
+		A.setRight(B)
+		A.setParent(BParent)
+		B.setParent(A)
+		if toPoint == 1:
+			A.getParent().setRight(A)
+		elif toPoint == -1:
+			A.getParent().setLeft(A)
+		else:
+			tr.setRoot(A)
+
+
+
+
 
