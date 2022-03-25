@@ -80,6 +80,15 @@ class AVLNode(object):
 		return 0 if self.getValue() is None else self.left.getSize() + self.right.getSize() + 1
 
 
+	"""return the balance factor of node, AVLTrees def that every node fulfill |BF(v)| <= 1 
+
+	@rtype: int
+	@:returns: The balance factor of the node
+	"""
+	def getBF(self):
+		return self.getLeft().getHeight() - self.getRight().getHeight()
+
+
 	"""sets left child
 
 	@type node: AVLNode
@@ -138,10 +147,52 @@ class AVLNode(object):
 	"""returns whether self is not a virtual node 
 
 	@rtype: bool
-	@returns: False if self is a virtual node, True otherwise.
+	@returns: False iff self is a virtual node.
 	"""
 	def isRealNode(self):
-		return True if self.value is not None else False
+		return self.getHeight() != -1
+
+
+
+	"""return the balance factor of node, AVLTrees def that every node fulfill |BF(v)| <= 1 
+
+		@rtype: bool
+		@returns: True iff |BF(v)| <= 1
+		"""
+	def validBF(self):
+		return True if abs(self.getBF()) <= 1 else False
+
+	"""The successor of the node v is the item following v in the list. 
+	
+	@rtype
+	"""
+	def successor(self):
+
+		v = self
+		right_son = self.getRight()
+		father = self.getParent()
+
+		if right_son.isRealNode():
+			while right_son.isRealNode():
+				v = right_son
+				right_son = right_son.getLeft()
+			return v
+
+		else:
+			if father is not None:
+				while father is not None and father.getLeft is not v:
+					v = father
+					father = father.getParent()
+				return None if father is None else v
+
+		return None
+
+	"""The predecessor of the node v is the item before v in the list. 
+
+		@rtype
+		"""
+	def predecessor(self):
+		return None
 
 
 
@@ -185,21 +236,8 @@ class AVLTreeList(object):
 	@returns: the the value of the i'th item in the list
 	"""
 	def retrieve(self, i):
-		j = i + 1
-		explore = self.root
-		counter = explore.getLeft().getSize() + 1
 
-		while j != counter:
-			if j < counter:
-				explore = explore.getLeft()
-				counter = explore.getLeft().getSize() + 1
-
-			else:
-				j = j - counter
-				explore = explore.getRight()
-				counter = explore.getLeft().getSize() + 1
-
-		return explore.getValue()
+		return self.retrieveByIndex(i).getValue()
 
 
 	"""inserts val at position i in the list
@@ -317,4 +355,29 @@ class AVLTreeList(object):
 	def getRoot(self):
 		return None
 
+
+	"""retrieve pointer to the node in the list on index i 
+	
+	Complexity: O(log(n))
+	@pre: 0 <= i < self.length()
+	@param i: The intended index in the list 
+	@rtype: AVLNode
+	@return: pointer to the node in the list on index i 
+	"""
+	def retrieveByIndex(self, i):
+		j = i + 1
+		explore = self.root
+		counter = explore.getLeft().getSize() + 1
+
+		while j != counter:
+			if j < counter:
+				explore = explore.getLeft()
+				counter = explore.getLeft().getSize() + 1
+
+			else:
+				j = j - counter
+				explore = explore.getRight()
+				counter = explore.getLeft().getSize() + 1
+
+		return explore
 
