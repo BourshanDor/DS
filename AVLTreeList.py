@@ -7,6 +7,9 @@
 from printree import *
 
 
+
+
+
 """A class represnting a node in an AVL tree"""
 
 class AVLNode(object) :
@@ -72,7 +75,7 @@ class AVLNode(object) :
 
 	# TODO: Remember to update in insert function
 	def getHeight(self):
-		return self.height
+		return -1 if not self.isRealNode() else max(self.getRight().getHeight(),self.getLeft().getHeight()) + 1
 
 	"""returns the size
 	
@@ -153,7 +156,7 @@ class AVLNode(object) :
 	@returns: False iff self is a virtual node.
 	"""
 	def isRealNode(self):
-		return self.getHeight() != -1
+		return not (self.value is None and self.getLeft() is None and self.getRight() is None)
 
 
 
@@ -420,6 +423,12 @@ class AVLTreeList(object):
 			A.getParent().setLeft(A)
 		else:
 			tr.setRoot(A)
+
+		B.setSize(B.getSize())
+		A.setSize(A.getSize())
+		B.setHeight(B.getHeight())
+		A.setHeight(A.getHeight())
+
 
 
 

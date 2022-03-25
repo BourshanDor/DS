@@ -2,6 +2,7 @@ import unittest
 from AVLTreeList import *
 
 
+
 class TestAVLTreesList(unittest.TestCase):
     def test_isRealNode(self):
         #self.assertEqual(common, desirable)
@@ -15,7 +16,7 @@ class TestAVLTreesList(unittest.TestCase):
         #self.assertEqual(common, desirable)
         tree_node1 = AVLNode(None)
         tree_node2 = AVLNode('a')
-        self.assertEqual(tree_node1.getHeight(), -1)
+        self.assertEqual(tree_node1.getHeight(), 0)
         self.assertEqual(tree_node2.getHeight(), 0)
 
 
@@ -44,7 +45,9 @@ class TestAVLTreesList(unittest.TestCase):
         #print(tr)
     def test_right_rotation(self):
         B = AVLNode("B")
+        B.setHeight(2)
         A = AVLNode("A")
+        A.setHeight(1)
         A.setParent(B)
         v = AVLNode("v")
         v.setParent(A)
