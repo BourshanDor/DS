@@ -20,12 +20,21 @@ class AVLNode(object) :
 
 	def __init__(self, value):
 		self.value = value
-		self.left = None if value == AVLNode.NO_STRING else AVLNode(AVLNode.NO_STRING)
-		self.right = None if value == AVLNode.NO_STRING else AVLNode(AVLNode.NO_STRING)
+		if isinstance(self, AVLVirtualNode):
+			self.left = None
+			self.right = None
+			self.height = -1
+			self.size = 0
+		else:
+			self.left = AVLVirtualNode()
+			self.right = AVLVirtualNode()
+			self.height = 0
+			self.size = 1
+		# self.left = None if value == AVLNode.NO_STRING else AVLNode(AVLNode.NO_STRING)
+		# self.right = None if value == AVLNode.NO_STRING else AVLNode(AVLNode.NO_STRING)
 		self.parent = None
-		self.height = -1 if value == AVLNode.NO_STRING else 0
-		self.size = 0 if value == AVLNode.NO_STRING else 1
-
+		# self.height = -1 if value == AVLNode.NO_STRING else 0
+		# self.size = 0 if value == AVLNode.NO_STRING else 1
 
 	"""printable representation of the AVLNode.
 	"""
@@ -100,7 +109,7 @@ class AVLNode(object) :
 	"""
 	def setLeft(self, node):
 		self.left = node
-		AVLNode.setParent(node, self)
+		node.setParent(self)
 		return None
 
 	"""sets right child
@@ -110,7 +119,7 @@ class AVLNode(object) :
 	"""
 	def setRight(self, node):
 		self.right = node
-		AVLNode.setParent(node, self)
+		node.setParent(self)
 		return None
 
 	"""sets parent
@@ -154,7 +163,7 @@ class AVLNode(object) :
 	@returns: False iff self is a virtual node.
 	"""
 	def isRealNode(self):
-		return not (self.value == AVLNode.NO_STRING and self.getLeft() is None and self.getRight() is None)
+		return not isinstance(self, AVLVirtualNode)
 
 	"""return the balance factor of node, AVLTrees def that every node fulfill |BF(v)| <= 1 
 
@@ -162,7 +171,7 @@ class AVLNode(object) :
 		@returns: True iff |BF(v)| <= 1
 		"""
 	def validBF(self):
-		return True if abs(self.getBF()) <= 1 else False
+		return abs(self.getBF()) <= 1
 
 	"""The successor of the node v is the item following v in the list. 
 	
@@ -227,6 +236,10 @@ class AVLNode(object) :
 			return 1
 		return -1
 
+
+class AVLVirtualNode(AVLNode):
+	def __init__(self):
+		super().__init__(None)
 
 
 """
