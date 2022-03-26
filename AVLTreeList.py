@@ -84,7 +84,6 @@ class AVLNode(object) :
 	def getSize(self):
 		return 0 if not self.isRealNode() else self.left.getSize() + self.right.getSize() + 1
 
-
 	"""return the balance factor of node, AVLTrees def that every node fulfill |BF(v)| <= 1 
 
 	@rtype: int
@@ -199,8 +198,8 @@ class AVLNode(object) :
 		return par
 
 	"""
-	Add docs
 	"""
+	# TODO: Add docs
 	def predicate(self, origin, getSuccessor):
 		return self is not None and \
 				(getSuccessor and (self.getLeft() is not origin)) or \
@@ -384,7 +383,7 @@ class AVLTreeList(object):
 	def setRoot(self, newNode):
 		self.root = newNode
 
-	"""retrieve pointer to the node in the list on index i 
+	"""retrieve pointer to the node in the list at index i 
 	
 	Complexity: O(log(n))
 	@pre: 0 <= i < self.length()
@@ -409,48 +408,75 @@ class AVLTreeList(object):
 
 		return explore
 
-	def rotate(self, B):
-		selfBF, rightBF, leftBF = B.getBF(), B.getRight().getBF(), B.getLeft().getBF()
-		if (selfBF > 1):
-			if (leftBF > 0):
-				self.rotateRight(B)
-			else:
-				self.rotateLeftRight(B)
-		if (selfBF < -1):
-			if (rightBF < 0):
-				self.rotateLeft(B)
-			else:
-				self.rotateRightLeft(B)
+	"""
+	Rotates node to restore legal balance factor.
+	Implicitly checks if rotation is required; if not, returns 0.
+	@param node: The potentially invariant-violating node
+	@rtype: int
+	@returns: Number of rotations performed to restore balance to node
+	@post: Subtree rooted at node is a legal AVL tree
+	"""
+	def balanceNode(self, node):
+		rotationsPerformed = 0
+		# FIXME: complexity?!
+		selfBF = node.getBF()
+		if abs(selfBF) <= 1:
+			return rotationsPerformed
+		rightBF, leftBF = node.getRight().getBF(), node.getLeft().getBF()
+		if selfBF > 1:
+			if leftBF < 0:
+				self.rotateRight(node.getRight())
+			self.rotateLeft(node)
+			rotationsPerformed = 1
+		if selfBF < -1:
+			if rightBF > 0:
+				self.rotateLeft(node.getLeft())
+			self.rotateRight(node)
+			rotationsPerformed = 1
+		return rotationsPerformed
 
 	""" 
 	"""
+	# TODO: Add docs
 	def rotateRight(self, B):
 		toPoint = B.checkParentSide()
-
 		A = B.getLeft()
 		A_r = A.getRight()
 		BParent = B.getParent()
 
 		B.setLeft(A_r)
-		A.setParent(B)
+		# A.setParent(B) // unless I'm missing something, we don't need this(?)
 		A.setRight(B)
 		A.setParent(BParent)
 		B.setParent(A)
+		self.assignParentSide(A, toPoint)
+		B.recalculate()
+		A.recalculate()
+
+	"""
+	"""
+	# TODO: Add docs
+	def rotateLeft(self, B):
+		toPoint = B.checkParentSide()
+		A = B.getRight()
+		A_l = A.getLeft()
+		BParent = B.getParent()
+
+		B.setRight(A_l)
+		A.setLeft(B)
+		A.setParent(BParent)
+		B.setParent(A)
+		self.assignParentSide(A, toPoint)
+		B.recalculate()
+		A.recalculate()
+
+	"""
+	"""
+	# TODO: Add docs
+	def assignParentSide(self, A, toPoint):
 		if toPoint == 1:
 			A.getParent().setRight(A)
 		elif toPoint == -1:
 			A.getParent().setLeft(A)
 		else:
 			self.setRoot(A)
-
-		B.recalculate()
-		A.recalculate()
-
-	def rotateLeft(self, B):
-		return None
-
-	def rotateLeftRight(self, B):
-		return None
-
-	def rotateRightLeft(self, B):
-		return None

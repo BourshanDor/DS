@@ -14,9 +14,9 @@ class TestAVLTreesList(unittest.TestCase):
 
     def test_getHeight(self):
         #self.assertEqual(common, desirable)
-        tree_node1 = AVLNode(None)
+        tree_node1 = AVLNode(AVLNode.NO_STRING)
         tree_node2 = AVLNode('a')
-        self.assertEqual(tree_node1.getHeight(), 0)
+        self.assertEqual(tree_node1.getHeight(), -1)
         self.assertEqual(tree_node2.getHeight(), 0)
 
 
@@ -62,7 +62,7 @@ class TestAVLTreesList(unittest.TestCase):
         A.setRight(K)
         tr = AVLTreeList()
         tr.root = B
-        #print(tr)
+        print(tr)
 
         tr.rotateRight(B)
 
@@ -81,6 +81,9 @@ class TestAVLTreesList(unittest.TestCase):
             print(pointer)
             pointer = pointer.predecessor()
         print(v.predecessor())
+
+        tr.rotateLeft(A)
+        print(tr)
 
 
 
