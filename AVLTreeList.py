@@ -14,9 +14,6 @@ class AVLNode(object) :
 	@type value: str
 	@param value: data of your node
 	"""
-	@property
-	def NO_STRING(self):
-		return -1
 
 	def __init__(self, value):
 		self.value = value
@@ -30,25 +27,20 @@ class AVLNode(object) :
 			self.right = AVLVirtualNode()
 			self.height = 0
 			self.size = 1
-		# self.left = None if value == AVLNode.NO_STRING else AVLNode(AVLNode.NO_STRING)
-		# self.right = None if value == AVLNode.NO_STRING else AVLNode(AVLNode.NO_STRING)
 		self.parent = None
-		# self.height = -1 if value == AVLNode.NO_STRING else 0
-		# self.size = 0 if value == AVLNode.NO_STRING else 1
 
 	"""printable representation of the AVLNode.
 	"""
 	def __repr__(self):
 		return self.getValue()
 
-
 	"""returns the left child
+	
 	@rtype: AVLNode
 	@returns: the left child of self, None if there is no left child
 	"""
 	def getLeft(self):
 		return self.left
-
 
 	"""returns the right child
 
