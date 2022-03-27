@@ -22,9 +22,10 @@ class AVLNode(object) :
 			self.right = None
 			self.height = -1
 			self.size = 0
+
 		else:
-			self.left = AVLVirtualNode()
-			self.right = AVLVirtualNode()
+			self.left = AVLVirtualNode(self)
+			self.right = AVLVirtualNode(self)
 			self.height = 0
 			self.size = 1
 		self.parent = None
@@ -91,7 +92,8 @@ class AVLNode(object) :
 	@:returns: The balance factor of the node
 	"""
 	def getBF(self):
-		return self.getLeft().getHeight() - self.getRight().getHeight()
+
+		return self.getLeft().getHeight() - self.getRight().getHeight() if self.isRealNode() else 0
 
 
 	"""sets left child
@@ -230,8 +232,9 @@ class AVLNode(object) :
 
 
 class AVLVirtualNode(AVLNode):
-	def __init__(self):
+	def __init__(self, par):
 		super().__init__(None)
+		self.parent = par
 
 
 """
@@ -245,7 +248,7 @@ class AVLTreeList(object):
 
 	"""
 	def __init__(self):
-		self.root = AVLNode(None); #TODO: change to correct init value
+		self.root = None; #TODO: change to correct init value
 		# add your fields here
 
 	def __repr__(self):
@@ -260,7 +263,8 @@ class AVLTreeList(object):
 	@returns: True if the list is empty, False otherwise 
 	"""
 	def empty(self):
-		return not self.root.isRealNode()
+		return not isinstance(self.root, AVLNode)
+
 
 	"""retrieves the value of the i'th item in the list
 
@@ -285,7 +289,27 @@ class AVLTreeList(object):
 	@returns: the number of rebalancing operation due to AVL rebalancing
 	"""
 	def insert(self, i, val):
-		return -1
+		insertNode = AVLNode(val)
+		if self.empty():
+			self.root = insertNode
+			return 0
+
+		node = self.retrieveByIndex(i-1)
+		node = node.getRight()
+		while node.isRealNode():
+			node = node.getLeft()
+		node = node.getParent()
+		node.setRight(insertNode)
+		insertNode.setParent(node)
+		counter = 0
+		while insertNode is not None:
+
+			insertNode.setHeight(insertNode.getHeight())
+			insertNode.setSize(insertNode.getSize())
+			counter = 1 if counter == 1 else self.balanceNode(insertNode)
+
+			insertNode = insertNode.getParent()
+
 
 	"""deletes the i'th item in the list
 
@@ -338,7 +362,7 @@ class AVLTreeList(object):
 	@returns: the size of the list
 	"""
 	def length(self):
-		return self.root.getSize()
+		return 0 if self.empty() else self.root.getSize()
 
 	"""splits the list at the i'th index
 
@@ -430,13 +454,13 @@ class AVLTreeList(object):
 		rightBF, leftBF = node.getRight().getBF(), node.getLeft().getBF()
 		if selfBF > 1:
 			if leftBF < 0:
-				self.rotateRight(node.getRight())
-			self.rotateLeft(node)
+				self.rotateLeft(node.getRight())
+			self.rotateRight(node)
 			rotationsPerformed = 1
 		if selfBF < -1:
 			if rightBF > 0:
-				self.rotateLeft(node.getLeft())
-			self.rotateRight(node)
+				self.rotateRight(node.getLeft())
+			self.rotateLeft(node)
 			rotationsPerformed = 1
 		return rotationsPerformed
 
@@ -447,6 +471,7 @@ class AVLTreeList(object):
 		toPoint = B.checkParentSide()
 		A = B.getLeft()
 		A_r = A.getRight()
+
 		BParent = B.getParent()
 
 		B.setLeft(A_r)
