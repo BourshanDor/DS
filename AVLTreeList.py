@@ -422,20 +422,24 @@ class AVLTreeList(object):
 	"""
 	def retrieveByIndex(self, i):
 		j = i + 1
+		roo = None
 		explore = self.root
 		counter = explore.getLeft().getSize() + 1
 
-		while j != counter:
+		while j != counter: #and explore.isRealNode():
 			if j < counter:
+				roo = explore
 				explore = explore.getLeft()
 				counter = explore.getLeft().getSize() + 1
+				#counter = explore.getSize() + 1
 
 			else:
 				j = j - counter
+				roo = explore
 				explore = explore.getRight()
 				counter = explore.getLeft().getSize() + 1
 
-		return explore
+		return explore #if explore.isRealNode() else roo
 
 	"""
 	Rotates node to restore legal balance factor.

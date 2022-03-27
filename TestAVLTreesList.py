@@ -1,5 +1,6 @@
 import unittest
 from AVLTreeList import *
+import random
 
 
 
@@ -87,8 +88,13 @@ class TestAVLTreesList(unittest.TestCase):
 
     def test_insert(self):
         tr = AVLTreeList()
-        for i in range (10):
+
+
+        for i in range (5):
             tr.insert(tr.length(),str(i))
+        tr.insert(1,str(-1))
+        #tr.insert(0,str(-2))
+
 
         print(tr)
 
