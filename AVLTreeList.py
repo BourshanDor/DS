@@ -289,27 +289,30 @@ class AVLTreeList(object):
 	@returns: the number of rebalancing operation due to AVL rebalancing
 	"""
 	def insert(self, i, val):
-		insertNode = AVLNode(val)
+		rotationCounter = 0
+		insertionNode = AVLNode(val)
 		if self.empty():
-			self.root = insertNode
-			return 0
+			self.root = insertionNode
+			return rotationCounter
 
-		node = self.retrieveByIndex(i-1)
-		node = node.getRight()
-		while node.isRealNode():
-			node = node.getLeft()
-		node = node.getParent()
-		node.setRight(insertNode)
-		insertNode.setParent(node)
-		counter = 0
-		while insertNode is not None:
+		# Fetch the node at index i - 1. Take one step right, then go all the way left.
+		descendingPointer = self.retrieveByIndex(i - 1)
+		descendingPointer = descendingPointer.getRight()
+		while descendingPointer.isRealNode():
+			descendingPointer = descendingPointer.getLeft()
+		# node now points to the virtual node which we want to replace with our insertionNode.
+		# All that's left to do is set its parent and place it to the proper side of its parent.
+		where = descendingPointer.checkParentSide()
+		insertionNode.setParent(descendingPointer.getParent())
+		self.assignParentSide(insertionNode, where, allowRoot=False)
 
-			insertNode.setHeight(insertNode.getHeight())
-			insertNode.setSize(insertNode.getSize())
-			counter = 1 if counter == 1 else self.balanceNode(insertNode)
-
-			insertNode = insertNode.getParent()
-
+		# After inserting our node, we traverse the branch from it to up the root, balancing and recalculating fields.
+		ascendingPointer = insertionNode
+		while ascendingPointer is not None:
+			ascendingPointer.recalculate()
+			rotationCounter = 1 if rotationCounter == 1 else self.balanceNode(ascendingPointer)
+			ascendingPointer = ascendingPointer.getParent()
+		return rotationCounter
 
 	"""deletes the i'th item in the list
 
@@ -458,12 +461,12 @@ class AVLTreeList(object):
 		rightBF, leftBF = node.getRight().getBF(), node.getLeft().getBF()
 		if selfBF > 1:
 			if leftBF < 0:
-				self.rotateLeft(node.getRight())
+				self.rotateLeft(node.getLeft())
 			self.rotateRight(node)
 			rotationsPerformed = 1
 		if selfBF < -1:
 			if rightBF > 0:
-				self.rotateRight(node.getLeft())
+				self.rotateRight(node.getRight())
 			self.rotateLeft(node)
 			rotationsPerformed = 1
 		return rotationsPerformed
@@ -471,46 +474,47 @@ class AVLTreeList(object):
 	""" 
 	"""
 	# TODO: Add docs
-	def rotateRight(self, B):
-		toPoint = B.checkParentSide()
-		A = B.getLeft()
-		A_r = A.getRight()
+	def rotateRight(self, axisNode):
+		toPoint = axisNode.checkParentSide()
+		movingNode = axisNode.getLeft()
+		movingRightSub = movingNode.getRight()
 
-		BParent = B.getParent()
+		axisParent = axisNode.getParent()
 
-		B.setLeft(A_r)
-		# A.setParent(B) // unless I'm missing something, we don't need this(?)
-		A.setRight(B)
-		A.setParent(BParent)
-		B.setParent(A)
-		self.assignParentSide(A, toPoint)
-		B.recalculate()
-		A.recalculate()
-
-	"""
-	"""
-	# TODO: Add docs
-	def rotateLeft(self, B):
-		toPoint = B.checkParentSide()
-		A = B.getRight()
-		A_l = A.getLeft()
-		BParent = B.getParent()
-
-		B.setRight(A_l)
-		A.setLeft(B)
-		A.setParent(BParent)
-		B.setParent(A)
-		self.assignParentSide(A, toPoint)
-		B.recalculate()
-		A.recalculate()
+		axisNode.setLeft(movingRightSub)
+		movingNode.setRight(axisNode)
+		movingNode.setParent(axisParent)
+		axisNode.setParent(movingNode)
+		self.assignParentSide(movingNode, toPoint)
+		axisNode.recalculate()
+		movingNode.recalculate()
 
 	"""
 	"""
 	# TODO: Add docs
-	def assignParentSide(self, A, toPoint):
+	def rotateLeft(self, axisNode):
+		toPoint = axisNode.checkParentSide()
+		movingNode = axisNode.getRight()
+		movingLeftSub = movingNode.getLeft()
+		axisParent = axisNode.getParent()
+
+		axisNode.setRight(movingLeftSub)
+		movingNode.setLeft(axisNode)
+		movingNode.setParent(axisParent)
+		axisNode.setParent(movingNode)
+		self.assignParentSide(movingNode, toPoint)
+		axisNode.recalculate()
+		movingNode.recalculate()
+
+	"""
+	"""
+	# TODO: Add docs
+	def assignParentSide(self, node, toPoint, allowRoot=True):
 		if toPoint == 1:
-			A.getParent().setRight(A)
+			node.getParent().setRight(node)
 		elif toPoint == -1:
-			A.getParent().setLeft(A)
+			node.getParent().setLeft(node)
 		else:
-			self.setRoot(A)
+			if not allowRoot:
+				raise RuntimeError
+			self.setRoot(node)

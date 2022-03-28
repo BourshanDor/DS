@@ -90,9 +90,9 @@ class TestAVLTreesList(unittest.TestCase):
         tr = AVLTreeList()
 
 
-        for i in range (5):
+        for i in range (10):
             tr.insert(tr.length(),str(i))
-        tr.insert(1,str(-1))
+        print(tr.insert(6,str(-1)))
         #tr.insert(0,str(-2))
 
 
