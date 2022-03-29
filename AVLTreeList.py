@@ -310,7 +310,7 @@ class AVLTreeList(object):
 		ascendingPointer = insertionNode
 		while ascendingPointer is not None:
 			ascendingPointer.recalculate()
-			rotationCounter = 1 if rotationCounter == 1 else self.balanceNode(ascendingPointer)
+			rotationCounter = rotationCounter if rotationCounter >= 1 else self.balanceNode(ascendingPointer)
 			ascendingPointer = ascendingPointer.getParent()
 		return rotationCounter
 
@@ -462,13 +462,15 @@ class AVLTreeList(object):
 		if selfBF > 1:
 			if leftBF < 0:
 				self.rotateLeft(node.getLeft())
+				rotationsPerformed += 1
 			self.rotateRight(node)
-			rotationsPerformed = 1
+			rotationsPerformed += 1
 		if selfBF < -1:
 			if rightBF > 0:
 				self.rotateRight(node.getRight())
+				rotationsPerformed += 1
 			self.rotateLeft(node)
-			rotationsPerformed = 1
+			rotationsPerformed = +1
 		return rotationsPerformed
 
 	""" 
