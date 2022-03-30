@@ -294,16 +294,21 @@ class AVLTreeList(object):
 		if self.empty():
 			self.root = insertionNode
 			return rotationCounter
-
-		# Fetch the node at index i. Take one step right, then go all the way left.
-		descendingPointer = self.retrieveByIndex(i)
-		while descendingPointer.isRealNode():
-			descendingPointer = descendingPointer.getLeft()
-		# node now points to the virtual node which we want to replace with our insertionNode.
-		# All that's left to do is set its parent and place it to the proper side of its parent.
-		where = descendingPointer.checkParentSide()
-		insertionNode.setParent(descendingPointer.getParent())
-		self.assignParentSide(insertionNode, where, allowRoot=False)
+		if i == 0:
+			first = self.first()
+			insertionNode.setParent(first)
+			first.setLeft(insertionNode)
+		else:
+			# Fetch the node at index i. Take one step right, then go all the way left.
+			descendingPointer = self.retrieveByIndex(i-1)
+			descendingPointer = descendingPointer.getRight()
+			while descendingPointer.isRealNode():
+				descendingPointer = descendingPointer.getLeft()
+			# node now points to the virtual node which we want to replace with our insertionNode.
+			# All that's left to do is set its parent and place it to the proper side of its parent.
+			where = descendingPointer.checkParentSide()
+			insertionNode.setParent(descendingPointer.getParent())
+			self.assignParentSide(insertionNode, where, allowRoot=False)
 
 		# After inserting our node, we traverse the branch from it to up the root, balancing and recalculating fields.
 		ascendingPointer = insertionNode
@@ -431,8 +436,8 @@ class AVLTreeList(object):
 	@return: pointer to the node in the list at index i 
 	"""
 	def retrieveByIndex(self, i):
-		if i == self.length():
-			return self.last().right
+		#if i == self.length():
+		#	return self.last().successor()
 		j = i + 1
 
 		explore = self.root
