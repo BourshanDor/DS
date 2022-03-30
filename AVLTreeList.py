@@ -295,9 +295,8 @@ class AVLTreeList(object):
 			self.root = insertionNode
 			return rotationCounter
 
-		# Fetch the node at index i - 1. Take one step right, then go all the way left.
+		# Fetch the node at index i. Take one step right, then go all the way left.
 		descendingPointer = self.retrieveByIndex(i)
-		#descendingPointer = descendingPointer.getRight()
 		while descendingPointer.isRealNode():
 			descendingPointer = descendingPointer.getLeft()
 		# node now points to the virtual node which we want to replace with our insertionNode.
@@ -357,7 +356,15 @@ class AVLTreeList(object):
 	@returns: a list of strings representing the data structure
 	"""
 	def listToArray(self):
-		return None
+		arr = []
+		i = self.first()
+		last = self.last()
+		while i is not last:
+			arr.append(i.getValue())
+			i = i.successor()
+		arr.append(last.getValue())
+		return arr
+
 
 	"""returns the size of the list 
 

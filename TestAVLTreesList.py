@@ -94,6 +94,8 @@ class TestAVLTreesList(unittest.TestCase):
         for i in range (10):
             print(tr.insert(tr.length(),str(i)))
             print(tr)
+        tr.insert(5, "A")
+
         #for i in range(6):
          #   tr.insert(tr.length()//2,str(i+10))
         #print((tr.insert(tr.length()//2, "DOUBLE")))
@@ -104,6 +106,7 @@ class TestAVLTreesList(unittest.TestCase):
 
 
         print(tr)
+        print(tr.listToArray())
 
 
 
