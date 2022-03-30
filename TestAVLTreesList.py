@@ -92,10 +92,12 @@ class TestAVLTreesList(unittest.TestCase):
 
 
         for i in range (10):
-            tr.insert(tr.length(),str(i))
-        for i in range(6):
-            tr.insert(tr.length()//2,str(i+10))
-        print((tr.insert(tr.length()//2, "DOUBLE")))
+            print(tr.insert(tr.length(),str(i)))
+            print(tr)
+        #for i in range(6):
+         #   tr.insert(tr.length()//2,str(i+10))
+        #print((tr.insert(tr.length()//2, "DOUBLE")))
+        #print(tr.insert(0, "A"))
         #print(tr.insert(9,str(-1)))
         #print(tr.insert(11, str(-2)))
         #tr.insert(0,str(-2))

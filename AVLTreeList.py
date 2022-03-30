@@ -296,8 +296,8 @@ class AVLTreeList(object):
 			return rotationCounter
 
 		# Fetch the node at index i - 1. Take one step right, then go all the way left.
-		descendingPointer = self.retrieveByIndex(i - 1)
-		descendingPointer = descendingPointer.getRight()
+		descendingPointer = self.retrieveByIndex(i)
+		#descendingPointer = descendingPointer.getRight()
 		while descendingPointer.isRealNode():
 			descendingPointer = descendingPointer.getLeft()
 		# node now points to the virtual node which we want to replace with our insertionNode.
@@ -424,25 +424,23 @@ class AVLTreeList(object):
 	@return: pointer to the node in the list at index i 
 	"""
 	def retrieveByIndex(self, i):
+		if i == self.length():
+			return self.last().right
 		j = i + 1
-		roo = None
+
 		explore = self.root
 		counter = explore.getLeft().getSize() + 1
 
-		while j != counter: #and explore.isRealNode():
+		while j != counter:
 			if j < counter:
-				roo = explore
 				explore = explore.getLeft()
 				counter = explore.getLeft().getSize() + 1
-				#counter = explore.getSize() + 1
-
 			else:
 				j = j - counter
-				roo = explore
 				explore = explore.getRight()
 				counter = explore.getLeft().getSize() + 1
 
-		return explore #if explore.isRealNode() else roo
+		return explore
 
 	"""
 	Rotates node to restore legal balance factor.
