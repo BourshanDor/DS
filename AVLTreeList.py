@@ -285,7 +285,7 @@ class AVLTreeList(object):
 	@param i: The intended index in the list to which we insert val
 	@type val: str
 	@param val: the value we inserts
-	@rtype: list
+	@rtype: int
 	@returns: the number of rebalancing operation due to AVL rebalancing
 	"""
 	def insert(self, i, val):
@@ -311,12 +311,92 @@ class AVLTreeList(object):
 			self.assignParentSide(insertionNode, where, allowRoot=False)
 
 		# After inserting our node, we traverse the branch from it to up the root, balancing and recalculating fields.
-		ascendingPointer = insertionNode
+		return self.balanceTree(insertionNode, rotationCounter)
+
+	"""
+	Traverses the branch from node to root, rotating and balancing as required.
+	Runtime: O(logn).
+	@param ascendingPointer: position to start traversing upwards from
+	@rtype: int
+	@returns: rotations performed
+	"""
+	def balanceTree(self, ascendingPointer, rotationCounter):
 		while ascendingPointer is not None:
 			ascendingPointer.recalculate()
-			rotationCounter = rotationCounter if rotationCounter >= 1 else self.balanceNode(ascendingPointer)
+			rotationCounter = rotationCounter + self.balanceNode(ascendingPointer)
 			ascendingPointer = ascendingPointer.getParent()
 		return rotationCounter
+
+	def deleteLeaf(self, leaf):
+		par = leaf.getParent()
+		side = leaf.checkParentSide()
+		if side == 0:
+			self.root = None
+			return
+		if side == 1:
+			par.setRight(AVLVirtualNode(par))
+		else:
+			par.setLeft(AVLVirtualNode(par))
+		leaf.setParent(None)
+
+	def bypassDelete(self, node):
+		par = node.getParent()
+		child = node.getRight() if node.getRight().isRealNode() else node.getLeft()
+		side = node.checkParentSide()
+		if side == 0:
+			self.root = child
+			return
+		if side == 1:
+			par.setRight(child)
+		else:
+			par.setLeft(child)
+		node.setParent(None)
+		node.setLeft(AVLVirtualNode(node))
+		node.setRight(AVLVirtualNode(node))
+
+	def successorDelete(self, node, rotationCounter):
+		nodeLeft = node.getLeft()
+		nodeRight = node.getRight()
+		nodeParent = node.getParent()
+
+		successor = node.successor()
+		successorLeft = successor.getLeft()
+		successorRight = successor.getRight()
+		successorParent = successor.getParent()
+
+		side = node.checkParentSide()
+		if side == 0:
+			self.root = successor
+		elif side == 1:
+			nodeParent.setRight(successor)
+		else:
+			nodeParent.setLeft(successor)
+
+		successor.setLeft(nodeLeft)
+		successor.setRight(nodeRight)
+		successor.setParent(nodeParent)
+
+		node.setLeft(successorLeft)
+		node.setRight(successorRight)
+		node.setParent(successorParent)
+		if successor is nodeRight:
+			node.setParent(successor)
+			successor.setRight(node)
+		node.recalculate()
+		successor.recalculate()
+		return self.deleteByReference(node, rotationCounter)
+
+	def deleteByReference(self, node, rotationCounter):
+		plus = 0
+		par = node.getParent()
+		if node.getSize() == 1:
+			self.deleteLeaf(node)
+		elif not (node.getLeft().isRealNode() and node.getRight().isRealNode()):
+			self.bypassDelete(node)
+		else:
+			plus = self.successorDelete(node, rotationCounter)
+
+		return self.balanceTree(par, rotationCounter) + plus
 
 	"""deletes the i'th item in the list
 
@@ -327,7 +407,10 @@ class AVLTreeList(object):
 	@returns: the number of rebalancing operation due to AVL rebalancing
 	"""
 	def delete(self, i):
-		return -1
+		rotationCounter = 0
+		node = self.retrieveByIndex(i)
+		return self.deleteByReference(node, rotationCounter)
+
 
 	"""returns the value of the first item in the list
 
@@ -362,6 +445,8 @@ class AVLTreeList(object):
 	"""
 	def listToArray(self):
 		arr = []
+		if self.empty():
+			return arr
 		i = self.first()
 		last = self.last()
 		while i is not last:
@@ -436,8 +521,6 @@ class AVLTreeList(object):
 	@return: pointer to the node in the list at index i 
 	"""
 	def retrieveByIndex(self, i):
-		#if i == self.length():
-		#	return self.last().successor()
 		j = i + 1
 
 		explore = self.root

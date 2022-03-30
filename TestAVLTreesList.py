@@ -86,6 +86,19 @@ class TestAVLTreesList(unittest.TestCase):
     #     tr.rotateLeft(A)
     #     #print(tr)
 
+    def testDelete(self):
+        rotations = []
+        tr = AVLTreeList()
+        for i in range(500):
+            tr.insert(tr.length()//2, str(i))
+        tr.listToArray()
+        for i in range(501):
+            rotations.append(tr.delete(tr.length()-1))
+        print(tr.listToArray())
+        self.assertEqual(tr.listToArray(), [])
+        self.assertIn(4, rotations)
+        #print(tr)
+
     def test_insert(self):
         lst = ['a','b','c','d','e','f','g','h']
 
@@ -93,27 +106,9 @@ class TestAVLTreesList(unittest.TestCase):
         tr = AVLTreeList()
         for i in range(len(lst)):
             tr.insert(i,lst[i])
-        print(tr)
-        print(tr.listToArray())
+        #print(tr)
+        #print(tr.listToArray())
         self.assertEqual(tr.listToArray(),lst)
-
-
-
-        # for i in range(5):
-        #     tr.insert(2*(i+1), str(10*(i+1)))
-
-        #for i in range(6):
-         #   tr.insert(tr.length()//2,str(i+10))
-        #print((tr.insert(tr.length()//2, "DOUBLE")))
-        #print(tr.insert(0, "A"))
-        #print(tr.insert(9,str(-1)))
-        #print(tr.insert(11, str(-2)))
-        #tr.insert(0,str(-2))
-
-
-
-
-
 
 def checkBalnceFactor(AVLTr):
 
