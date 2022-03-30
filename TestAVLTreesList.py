@@ -87,15 +87,20 @@ class TestAVLTreesList(unittest.TestCase):
     #     #print(tr)
 
     def test_insert(self):
+        lst = ['a','b','c','d','e','f','g','h']
+
+
         tr = AVLTreeList()
+        for i in range(len(lst)):
+            tr.insert(i,lst[i])
+        print(tr)
+        print(tr.listToArray())
+        self.assertEqual(tr.listToArray(),lst)
 
 
 
-        for i in range (10):
-            print(tr.insert(0,str(i)))
-            print(tr)
-        for i in range(5):
-            tr.insert(2*(i+1), str(10*(i+1)))
+        # for i in range(5):
+        #     tr.insert(2*(i+1), str(10*(i+1)))
 
         #for i in range(6):
          #   tr.insert(tr.length()//2,str(i+10))
@@ -106,13 +111,21 @@ class TestAVLTreesList(unittest.TestCase):
         #tr.insert(0,str(-2))
 
 
-        print(tr)
-        print(tr.listToArray())
 
 
 
 
+def checkBalnceFactor(AVLTr):
 
+    def recurtionCheckBalnceFactor(AVLNo):
+        if AVLNo.isRealNode():
+            return
+        recurtionCheckBalnceFactor(AVLNo.getLeft())
+        if not AVLNo.validBF():
+            print("Wrong")
+        recurtionCheckBalnceFactor(AVLNo.getRight())
+
+    recurtionCheckBalnceFactor(AVLTr.root())
 
 if __name__ == '__main__':
 
