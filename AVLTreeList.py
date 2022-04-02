@@ -237,6 +237,20 @@ class AVLVirtualNode(AVLNode):
 		self.parent = par
 
 
+#
+# class AVLOrdedNode(AVLNode):
+# 	def __init__(self,value, index):
+# 		super().__init__(value)
+# 		self.index = index
+# 	def getIndex(self):
+# 		return self.index
+#
+# 	def setIndex(self, index):
+# 		self.index = index
+
+
+
+
 """
 A class implementing the ADT list, using an AVL tree.
 """
@@ -249,7 +263,7 @@ class AVLTreeList(object):
 	"""
 	def __init__(self):
 		self.root = None; #TODO: change to correct init value
-		# add your fields here
+		# self.searchTree = AVLSearchTree()
 
 	def __repr__(self):
 		out = ""
@@ -310,6 +324,15 @@ class AVLTreeList(object):
 			insertionNode.setParent(descendingPointer.getParent())
 			self.assignParentSide(insertionNode, where, allowRoot=False)
 
+####################Added for SearchTree########################
+		# existNodeInSearchTree = self.searchTree.search(val)
+		# if existNodeInSearchTree is not None:
+		# 	if i < existNodeInSearchTree.getIndex():
+		# 		existNodeInSearchTree.setIndex(i)
+		# else:
+		# 	self.searchTree.insert(val,i)
+##################################################################
+
 		# After inserting our node, we traverse the branch from it to up the root, balancing and recalculating fields.
 		return self.balanceTree(insertionNode, rotationCounter)
 
@@ -320,7 +343,7 @@ class AVLTreeList(object):
 	@rtype: int
 	@returns: rotations performed
 	"""
-	def balanceTree(self, ascendingPointer, rotationCounter):
+	def balanceTree(self, ascendingPointer, rotationCounter = 0):
 		while ascendingPointer is not None:
 			ascendingPointer.recalculate()
 			rotationCounter = rotationCounter + self.balanceNode(ascendingPointer)
@@ -499,6 +522,8 @@ class AVLTreeList(object):
 		# with the values of the list-tree as keys
 		# and with pointers to the list nodes as values.
 		# TODO: Implement (forum says this is allowed)
+		# nodeInSearchTree = self.searchTree.search(val)
+		# return nodeInSearchTree.getIndex() if nodeInSearchTree is not None else -1
 		return None
 
 	"""returns the root of the tree representing the list
@@ -613,3 +638,45 @@ class AVLTreeList(object):
 			if not allowRoot:
 				raise RuntimeError
 			self.setRoot(node)
+
+
+#
+#
+# class AVLSearchTree(AVLTreeList):
+#
+# 	def __init__(self):
+# 		super().__init__()
+#
+# 	def insert(self, value, index):
+# 		insertionNode = AVLOrdedNode(value, index)
+# 		if self.empty():
+# 			self.root = insertionNode
+# 			return
+# 		tmp = None
+# 		explorer = self.root
+# 		while explorer.isRealNode() :
+# 			tmp = explorer
+# 			if value > explorer.getValue() :
+# 				explorer = explorer.getRight()
+# 			else:
+# 				explorer = explorer.getLeft()
+#
+# 		insertionNode.setParent(tmp)
+# 		if value > tmp.getValue():
+# 			tmp.setRight(insertionNode)
+# 		else:
+# 			tmp.setLeft(insertionNode)
+# 		# After inserting our node, we traverse the branch from it to up the root, balancing and recalculating fields.
+# 		self.balanceTree(insertionNode)
+# 		return
+#
+# 	def search(self, val):
+# 		explorer = self.root
+# 		while explorer.isRealNode():
+# 			if explorer.getValue() == val:
+# 				return explorer
+# 			elif explorer.getValue() > val:
+# 				explorer = explorer.getLeft()
+# 			else:
+# 				explorer = explorer.getLeft()
+# 		return None

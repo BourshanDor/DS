@@ -5,36 +5,38 @@ import random
 
 
 class TestAVLTreesList(unittest.TestCase):
-    # def test_isRealNode(self):
-    #     #self.assertEqual(common, desirable)
-    #     tree_node1 = AVLVirtualNode()
-    #     tree_node2 = AVLNode('a')
-    #     self.assertEqual(tree_node1.isRealNode(), False)
-    #     self.assertEqual(tree_node2.isRealNode(), True)
-    #
-    #
-    # def test_getHeight(self):
-    #     #self.assertEqual(common, desirable)
-    #     tree_node1 = AVLVirtualNode()
-    #     tree_node2 = AVLNode('a')
-    #     self.assertEqual(tree_node1.getHeight(), -1)
-    #     self.assertEqual(tree_node2.getHeight(), 0)
-    #
-    #
-    # def test_getSize(self):
-    #     #self.assertEqual(common, desirable)
-    #     tree_node1 = AVLVirtualNode()
-    #     tree_node2 = AVLNode('a')
-    #     self.assertEqual(tree_node1.getSize(), 0)
-    #     self.assertEqual(tree_node2.getSize(), 1)
-    #
-    # def test_getParent(self):
-    #     #self.assertEqual(common, desirable)
-    #     tree_node1 = AVLNode('a')
-    #     tree_node2 = AVLNode('b')
-    #     tree_node2.setParent(tree_node1)
-    #
-    #     self.assertEqual(tree_node2.getParent(), tree_node1)
+    def test_isRealNode(self):
+        #self.assertEqual(common, desirable)
+        #treeNode1 = AVLVirtualNode(5)
+        treeNode2 = AVLNode('a')
+        self.assertEqual(treeNode2.isRealNode(), True)
+        self.assertEqual(treeNode2.getLeft().isRealNode(), False)
+        self.assertEqual(treeNode2.getRight().isRealNode(), False)
+
+
+
+    def test_getHeight(self):
+        #self.assertEqual(common, desirable)
+        tree_node1 = AVLVirtualNode('6')
+        tree_node2 = AVLNode('a')
+        self.assertEqual(tree_node1.getHeight(), -1)
+        self.assertEqual(tree_node2.getHeight(), 0)
+
+
+    def test_getSize(self):
+        #self.assertEqual(common, desirable)
+        tree_node1 = AVLVirtualNode('5')
+        tree_node2 = AVLNode('a')
+        self.assertEqual(tree_node1.getSize(), 0)
+        self.assertEqual(tree_node2.getSize(), 1)
+
+    def test_getParent(self):
+        #self.assertEqual(common, desirable)
+        tree_node1 = AVLNode('a')
+        tree_node2 = AVLNode('b')
+        tree_node2.setParent(tree_node1)
+
+        self.assertEqual(tree_node2.getParent(), tree_node1)
     #
     # def test_repr(self):
     #     node = AVLNode('1')
@@ -42,8 +44,8 @@ class TestAVLTreesList(unittest.TestCase):
     #     node.setLeft(AVLNode('2'))
     #     tr = AVLTreeList()
     #     tr.root = node
-    #
-    #
+
+
     # def test_right_rotation(self):
     #     B = AVLNode("B")
     #     A = AVLNode("A")
@@ -85,42 +87,60 @@ class TestAVLTreesList(unittest.TestCase):
     #
     #     tr.rotateLeft(A)
     #     #print(tr)
-
-    def testDelete(self):
-        rotations = []
-        tr = AVLTreeList()
-        for i in range(500):
-            tr.insert(tr.length()//2, str(i))
-        tr.listToArray()
-        for i in range(501):
-            rotations.append(tr.delete(tr.length()-1))
-        print(tr.listToArray())
-        self.assertEqual(tr.listToArray(), [])
-        self.assertIn(4, rotations)
-        #print(tr)
-
-    def test_insert(self):
-        lst = ['a','b','c','d','e','f','g','h']
-
-
+    #
+    # def test_delete(self):
+    #     rotations = []
+    #     tr = AVLTreeList()
+    #     for i in range(500):
+    #         tr.insert(tr.length()//2, str(i))
+    #     tr.listToArray()
+    #     for i in range(501):
+    #         rotations.append(tr.delete(tr.length()-1))
+    #     print(tr.listToArray())
+    #     self.assertEqual(tr.listToArray(), [])
+    #     self.assertIn(4, rotations)
+    #     #print(tr)
+    #
+    def test_insert_ListTree(self):
+        lst = ['a','b','c','d','e','f','g','h','a','b','a','b','c','d','e','f']
         tr = AVLTreeList()
         for i in range(len(lst)):
             tr.insert(i,lst[i])
-        #print(tr)
-        #print(tr.listToArray())
+        print(tr)
+        print(tr.listToArray())
         self.assertEqual(tr.listToArray(),lst)
 
-def checkBalnceFactor(AVLTr):
 
-    def recurtionCheckBalnceFactor(AVLNo):
+    # def test_insert_SearchTree(self):
+
+        # lst = ['aa','a','b','c','d','aaa','e','f','g','h','tt']
+        # tr = AVLSearchTree()
+        # for i in range(len(lst)):
+        #     tr.insert(lst[i],0)
+        # print(tr)
+        # print(tr.listToArray())
+        # #self.assertEqual(tr.listToArray(),lst)
+
+
+
+
+
+
+
+
+
+
+def checkBalanceFactor(AVLTr):
+
+    def recurtionCheckBalanceFactor(AVLNo):
         if AVLNo.isRealNode():
             return
-        recurtionCheckBalnceFactor(AVLNo.getLeft())
+        recurtionCheckBalanceFactor(AVLNo.getLeft())
         if not AVLNo.validBF():
             print("Wrong")
-        recurtionCheckBalnceFactor(AVLNo.getRight())
+        recurtionCheckBalanceFactor(AVLNo.getRight())
 
-    recurtionCheckBalnceFactor(AVLTr.root())
+    recurtionCheckBalanceFactor(AVLTr.root())
 
 if __name__ == '__main__':
 
