@@ -497,10 +497,28 @@ class AVLTreeList(object):
 	right is an AVLTreeList representing the list from index i+1, and val is the value at the i'th index.
 	"""
 	def split(self, i):
-		# TODO: look at Tree-Select in lecture 4 PowerPoint
-		return None
+		pivot = self.retrieveByIndex(i)
+		leftTree, rightTree = AVLTreeList(), AVLTreeList()
+		leftTree.setRoot(pivot.getLeft())
+		rightTree.setRoot(pivot.getRight())
+		ascendingPointer = pivot
+		leftJoin = []
+		rightJoin = []
+		while ascendingPointer is not self.root:
+			parentSide = ascendingPointer.checkParentSide()
+			par = ascendingPointer.getParent()
+			siblingRoot = par.getLeft() if parentSide == 1 else par.getRight()
+			siblingTree = AVLTreeList()
+			siblingTree.setRoot(siblingRoot)
+			if parentSide == 1:
+				leftJoin.append([siblingTree, par])
+			else:
+				rightJoin.append([siblingTree, par])
 
-
+			ascendingPointer = ascendingPointer.getParent()
+		joinTreeList(leftTree, leftJoin, True)
+		joinTreeList(rightTree, rightJoin, False)
+		return [leftTree, pivot.getValue(), rightTree]
 
 
 	"""concatenates lst to self
@@ -702,6 +720,16 @@ def handleEmptyJoin(leftTree, rightTree, x):
 		return True
 	return False
 
+def joinTreeList(originalTree, treesToJoin, isLeft):
+	for tup in treesToJoin:
+		tup[0].getRoot().setParent(None)
+		tup[1].setLeft(AVLVirtualNode(tup[1]))
+		tup[1].setRight(AVLVirtualNode(tup[1]))
+		tup[1].setParent(None)
+		if isLeft:
+			join(tup[0], originalTree, tup[1])
+		else:
+			join(originalTree, tup[0], tup[1])
 
 #
 #

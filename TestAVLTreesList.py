@@ -110,27 +110,37 @@ class TestAVLTreesList(unittest.TestCase):
     #     print(tr.listToArray())
     #     self.assertEqual(tr.listToArray(),lst)
 
-    def test_concat(self):
-        #T1 = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']
-        #T2 = ['12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22']
-        T1 = []
-        T2 = ['A']
+    # def test_concat(self):
+    #     #T1 = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']
+    #     #T2 = ['12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22']
+    #     T1 = []
+    #     T2 = ['A']
+    #
+    #     tr1 = AVLTreeList()
+    #     tr2 = AVLTreeList()
+    #
+    #     for i in range(len(T2)):
+    #         tr2.insert(i,T2[i])
+    #
+    #     for i in range(len(T1)):
+    #         tr1.insert(i,T1[i])
+    #
+    #    # print(tr1)
+    #     print(tr2)
+    #     print(tr1.concat(tr2))
+    #     print(tr1)
+    #     print(tr1.listToArray())
 
-        tr1 = AVLTreeList()
-        tr2 = AVLTreeList()
-
-        for i in range(len(T2)):
-            tr2.insert(i,T2[i])
-
-        for i in range(len(T1)):
-            tr1.insert(i,T1[i])
-
-       # print(tr1)
-        print(tr2)
-        print(tr1.concat(tr2))
-        print(tr1)
-        print(tr1.listToArray())
-
+    def testSplit(self):
+        vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22']
+        tr = AVLTreeList()
+        for i in range(len(vals)):
+            tr.insert(i, vals[i])
+        print(tr)
+        out = tr.split(10)
+        print(out[0].listToArray())
+        print(out[1])
+        print(out[2].listToArray())
 
     # def test_insert_SearchTree(self):
 
