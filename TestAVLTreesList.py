@@ -110,10 +110,11 @@ class TestAVLTreesList(unittest.TestCase):
     #     print(tr.listToArray())
     #     self.assertEqual(tr.listToArray(),lst)
 
-    def test_join(self):
-        T2 = []
+    def test_concat(self):
+        #T1 = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']
+        #T2 = ['12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22']
         T1 = []
-        x = AVLNode('K')
+        T2 = ['A']
 
         tr1 = AVLTreeList()
         tr2 = AVLTreeList()
@@ -123,9 +124,10 @@ class TestAVLTreesList(unittest.TestCase):
 
         for i in range(len(T1)):
             tr1.insert(i,T1[i])
-        join(tr1, tr2, x)
 
+       # print(tr1)
         print(tr2)
+        print(tr1.concat(tr2))
         print(tr1)
         print(tr1.listToArray())
 

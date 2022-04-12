@@ -509,9 +509,22 @@ class AVLTreeList(object):
 	@param lst: a list to be concatenated after self
 	@rtype: int
 	@returns: the absolute value of the difference between the height of the AVL trees joined
+	@post: lst is mutated and should not be reused!
 	"""
 	def concat(self, lst):
-		return None
+		EMPTY_TREE_HEIGHT = -1
+		selfHeight = self.root.getHeight() if not self.empty() else EMPTY_TREE_HEIGHT
+		lstHeight = lst.root.getHeight() if not lst.empty() else EMPTY_TREE_HEIGHT
+		heightDiff = abs(selfHeight - lstHeight)
+		if self.empty():
+			self.setRoot(lst.root)
+			return heightDiff
+		if lst.empty():
+			return heightDiff
+		x = self.last()
+		self.delete(self.length()-1)
+		join(self, lst, x)
+		return heightDiff
 
 	"""searches for a *value* in the list
 
