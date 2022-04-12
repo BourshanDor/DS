@@ -5,39 +5,93 @@ import random
 
 
 class TestAVLTreesList(unittest.TestCase):
-    def test_isRealNode(self):
-        #self.assertEqual(common, desirable)
-        #treeNode1 = AVLVirtualNode(5)
-        treeNode2 = AVLNode('a')
-        self.assertEqual(treeNode2.isRealNode(), True)
-        self.assertEqual(treeNode2.getLeft().isRealNode(), False)
-        self.assertEqual(treeNode2.getRight().isRealNode(), False)
+
+    def test_empty(self):
+
+        list = AVLTreeList()
+        self.assertEqual(list.empty(), True)
+        list.insert(0,'a')
+        self.assertEqual(list.empty(), False)
+        list.delete(0)
+        self.assertEqual(list.empty(), True)
+
+    def test_retrieve(self):
+
+        list = AVLTreeList()
+        lst = []
+
+        for i in range(100):
+            lst.append(str(random.randint(0,1000000)))
+
+        for i in range(100):
+            list.insert(i, lst[i])
+
+        for i in range(100):
+            self.assertEqual(list.retrieve(i), lst[i])
+            self.assertEqual(list.retrieve(i) is None, False)
+            self.assertEqual(list.retrieve(i) == '-1', False)
+        TheTragedyofCoriolanus = []
+        with open('The Tragedy of Coriolanus.txt', 'r') as f:
+            for line in f:
+                for word in line.split():
+                    TheTragedyofCoriolanus.append(word)
+
+        list2 = AVLTreeList()
+        i = 0
+        for st in TheTragedyofCoriolanus:
+            list2.insert(i, st)
+            i += 1
+            if i == 1000:
+                break
+        i = 0
+        for st in TheTragedyofCoriolanus:
+            self.assertEqual(list2.retrieve(i), st)
+            i += 1
+            if i == 1000:
+                break
 
 
 
-    def test_getHeight(self):
-        #self.assertEqual(common, desirable)
-        tree_node1 = AVLVirtualNode('6')
-        tree_node2 = AVLNode('a')
-        self.assertEqual(tree_node1.getHeight(), -1)
-        self.assertEqual(tree_node2.getHeight(), 0)
 
 
-    def test_getSize(self):
-        #self.assertEqual(common, desirable)
-        tree_node1 = AVLVirtualNode('5')
-        tree_node2 = AVLNode('a')
-        self.assertEqual(tree_node1.getSize(), 0)
-        self.assertEqual(tree_node2.getSize(), 1)
 
-    def test_getParent(self):
-        #self.assertEqual(common, desirable)
-        tree_node1 = AVLNode('a')
-        tree_node2 = AVLNode('b')
-        tree_node2.setParent(tree_node1)
 
-        self.assertEqual(tree_node2.getParent(), tree_node1)
+
     #
+    #
+    # def test_isRealNode(self):
+    #     #self.assertEqual(common, desirable)
+    #     #treeNode1 = AVLVirtualNode(5)
+    #     treeNode2 = AVLNode('a')
+    #     self.assertEqual(treeNode2.isRealNode(), True)
+    #     self.assertEqual(treeNode2.getLeft().isRealNode(), False)
+    #     self.assertEqual(treeNode2.getRight().isRealNode(), False)
+    #
+    #
+    #
+    # def test_getHeight(self):
+    #     #self.assertEqual(common, desirable)
+    #     tree_node1 = AVLVirtualNode('6')
+    #     tree_node2 = AVLNode('a')
+    #     self.assertEqual(tree_node1.getHeight(), -1)
+    #     self.assertEqual(tree_node2.getHeight(), 0)
+    #
+    #
+    # def test_getSize(self):
+    #     #self.assertEqual(common, desirable)
+    #     tree_node1 = AVLVirtualNode('5')
+    #     tree_node2 = AVLNode('a')
+    #     self.assertEqual(tree_node1.getSize(), 0)
+    #     self.assertEqual(tree_node2.getSize(), 1)
+    #
+    # def test_getParent(self):
+    #     #self.assertEqual(common, desirable)
+    #     tree_node1 = AVLNode('a')
+    #     tree_node2 = AVLNode('b')
+    #     tree_node2.setParent(tree_node1)
+    #
+    #     self.assertEqual(tree_node2.getParent(), tree_node1)
+    # #
     # def test_repr(self):
     #     node = AVLNode('1')
     #     node.setRight(AVLNode('2'))
@@ -131,16 +185,16 @@ class TestAVLTreesList(unittest.TestCase):
     #     print(tr1)
     #     print(tr1.listToArray())
 
-    def testSplit(self):
-        vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22']
-        tr = AVLTreeList()
-        for i in range(len(vals)):
-            tr.insert(i, vals[i])
-        print(tr)
-        out = tr.split(10)
-        print(out[0].listToArray())
-        print(out[1])
-        print(out[2].listToArray())
+    # def testSplit(self):
+    #     vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22']
+    #     tr = AVLTreeList()
+    #     for i in range(len(vals)):
+    #         tr.insert(i, vals[i])
+    #     print(tr)
+    #     out = tr.split(10)
+    #     print(out[0].listToArray())
+    #     print(out[1])
+    #     print(out[2].listToArray())
 
     # def test_insert_SearchTree(self):
 
