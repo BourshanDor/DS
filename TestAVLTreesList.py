@@ -101,14 +101,33 @@ class TestAVLTreesList(unittest.TestCase):
     #     self.assertIn(4, rotations)
     #     #print(tr)
     #
-    def test_insert_ListTree(self):
-        lst = ['a','b','c','d','e','f','g','h','a','b','a','b','c','d','e','f']
-        tr = AVLTreeList()
-        for i in range(len(lst)):
-            tr.insert(i,lst[i])
-        print(tr)
-        print(tr.listToArray())
-        self.assertEqual(tr.listToArray(),lst)
+    # def test_insert_ListTree(self):
+    #     lst = ['a','b','c','d','e','f','g','h','a','b','a','b','c','d','e','f']
+    #     tr = AVLTreeList()
+    #     for i in range(len(lst)):
+    #         tr.insert(i,lst[i])
+    #     print(tr)
+    #     print(tr.listToArray())
+    #     self.assertEqual(tr.listToArray(),lst)
+
+    def test_join(self):
+        T2 = ['1','2','3','4','5','6']
+        T1 = ['8','9','10','11','12','13','14','15', '16', '17', '18', '19', '20', '21','22', '23', '24', '25']
+        x = AVLNode('7')
+
+        tr1 = AVLTreeList()
+        tr2 = AVLTreeList()
+
+        for i in range(len(T2)):
+            tr2.insert(i,T2[i])
+
+        for i in range(len(T1)):
+            tr1.insert(i,T1[i])
+        join(tr1, tr2, x)
+
+        print(tr2)
+        print(tr1)
+        print(tr1.listToArray())
 
 
     # def test_insert_SearchTree(self):

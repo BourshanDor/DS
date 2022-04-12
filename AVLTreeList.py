@@ -500,6 +500,9 @@ class AVLTreeList(object):
 		# TODO: look at Tree-Select in lecture 4 PowerPoint
 		return None
 
+
+
+
 	"""concatenates lst to self
 
 	@type lst: AVLTreeList
@@ -524,7 +527,7 @@ class AVLTreeList(object):
 		# TODO: Implement (forum says this is allowed)
 		# nodeInSearchTree = self.searchTree.search(val)
 		# return nodeInSearchTree.getIndex() if nodeInSearchTree is not None else -1
-		return None
+		return Nonew
 
 	"""returns the root of the tree representing the list
 
@@ -638,6 +641,33 @@ class AVLTreeList(object):
 			if not allowRoot:
 				raise RuntimeError
 			self.setRoot(node)
+
+
+def join (T1 : AVLTreeList, T2 : AVLTreeList, x : AVLNode):
+
+
+
+	t1Height = T1.root.getHeight()
+	t2Height = T2.root.getHeight()
+
+	if t1Height >= t2Height :
+		node = T1.root
+		while node.getHeight() > t2Height :
+			node = node.getRight()
+
+		fatherNode = node.getParent()   # None
+		x.setLeft(node)
+		x.setRight(T2.root)
+		x.setParent(fatherNode)
+		fatherNode.setRight(x)
+
+
+
+
+
+
+
+
 
 
 #
