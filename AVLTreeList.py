@@ -527,7 +527,7 @@ class AVLTreeList(object):
 		# TODO: Implement (forum says this is allowed)
 		# nodeInSearchTree = self.searchTree.search(val)
 		# return nodeInSearchTree.getIndex() if nodeInSearchTree is not None else -1
-		return Nonew
+		return None
 
 	"""returns the root of the tree representing the list
 
@@ -643,31 +643,51 @@ class AVLTreeList(object):
 			self.setRoot(node)
 
 
-def join (T1 : AVLTreeList, T2 : AVLTreeList, x : AVLNode):
-
-
-
-	t1Height = T1.root.getHeight()
-	t2Height = T2.root.getHeight()
-
-	if t1Height >= t2Height :
-		node = T1.root
-		while node.getHeight() > t2Height :
-			node = node.getRight()
-
-		fatherNode = node.getParent()   # None
+def join(leftTree, rightTree, x):
+	if handleEmptyJoin(leftTree, rightTree, x):
+		return
+	leftIsTaller = leftTree.root.getHeight() >= rightTree.root.getHeight()
+	shorter = rightTree if leftIsTaller else leftTree
+	taller = leftTree if leftIsTaller else rightTree
+	node = taller.root
+	while node.getHeight() > shorter.root.getHeight():
+		node = node.getRight() if leftIsTaller else node.getLeft()
+	par = node.getParent()
+	if leftIsTaller:
 		x.setLeft(node)
-		x.setRight(T2.root)
-		x.setParent(fatherNode)
-		fatherNode.setRight(x)
+		x.setRight(rightTree.root)
+		x.setParent(par)
+		if par is not None:
+			par.setRight(x)
+		else:
+			taller.setRoot(x)
+	else:
+		x.setRight(node)
+		x.setLeft(leftTree.root)
+		x.setParent(par)
+		if par is not None:
+			par.setLeft(x)
+		else:
+			taller.setRoot(x)
 
+	taller.balanceTree(x)
+	# set what was the shorter tree to point to the joined tree to avoid bugs
+	shorter.setRoot(taller.root)
 
-
-
-
-
-
-
+def handleEmptyJoin(leftTree, rightTree, x):
+	if leftTree.empty():
+		if rightTree.empty():
+			leftTree.setRoot(x)
+			rightTree.setRoot(x)
+			return True
+		rightTree.insert(0, x)
+		leftTree.setRoot(rightTree.root)
+		return True
+	elif rightTree.empty():
+		leftTree.insert(leftTree.length(), x)
+		rightTree.setRoot(leftTree.root)
+		return True
+	return False
 
 
 #

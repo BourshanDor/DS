@@ -111,9 +111,9 @@ class TestAVLTreesList(unittest.TestCase):
     #     self.assertEqual(tr.listToArray(),lst)
 
     def test_join(self):
-        T2 = ['1','2','3','4','5','6']
-        T1 = ['8','9','10','11','12','13','14','15', '16', '17', '18', '19', '20', '21','22', '23', '24', '25']
-        x = AVLNode('7')
+        T2 = []
+        T1 = []
+        x = AVLNode('K')
 
         tr1 = AVLTreeList()
         tr2 = AVLTreeList()
