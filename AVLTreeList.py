@@ -625,12 +625,19 @@ class AVLTreeList(object):
 			if leftBF < 0:
 				self.rotateLeft(node.getLeft())
 				rotationsPerformed += 1
+			if leftBF == 0:
+				print("HEGATI LEPOHHHH")
+				self.specialRotation(self.getLeft())
+				return 0
 			self.rotateRight(node)
 			rotationsPerformed += 1
 		if selfBF < -1:
 			if rightBF > 0:
 				self.rotateRight(node.getRight())
 				rotationsPerformed += 1
+			if rightBF == 0:
+				print("HEGATI LEPOH GAM")
+				return 0
 			self.rotateLeft(node)
 			rotationsPerformed += 1
 		return rotationsPerformed
@@ -683,6 +690,23 @@ class AVLTreeList(object):
 				raise RuntimeError
 			self.setRoot(node)
 
+	def specialRotation(self, axisNode):
+		toPoint = axisNode.checkParentSide()
+		if toPoint == -1:
+			self.specialRotationRight(axisNode)
+		elif toPoint == 1:
+			self.specialRotationLeft(axisNode)
+
+	def specialRotationRight(self, axisNode):
+		b = axisNode.getRight()  ##b
+		zPar = self.getParent()
+		self.setLeft(b)
+		axisNode.setRight(self)
+		axisNode.setParent(zPar)
+
+		self.recalculate()
+		axisNode.recalculate()
+		axisNode.recalculate()
 
 
 def join(leftTree, rightTree, x):

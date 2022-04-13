@@ -1,5 +1,6 @@
 import random
 from AVLTreeList import *
+from TestAVLTreesList import checkBalanceFactor
 
 def insertions(tr : AVLTreeList, n : int):
     total = 0
@@ -74,6 +75,9 @@ def q2a():
         print("RANDOM AVERAGE:", randAvg, ". RANDOM MAX:", randMax)
         [leftAvg, leftMax] = tr2.split(leftNode, True)
         print("LEFT AVERAGE:", leftAvg, ". LEFT MAX:", leftMax)
+        checkBalanceFactor(tr1)
+        checkBalanceFactor(tr2)
+
 
 
 
