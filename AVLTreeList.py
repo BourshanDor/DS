@@ -333,7 +333,8 @@ class AVLTreeList(object):
 		while ascendingPointer is not None:
 			heightDiff = ascendingPointer.recalculate()
 			rotationCount = self.balanceNode(ascendingPointer)
-			balanceCount = balanceCount + heightDiff + rotationCount
+			increment = rotationCount if rotationCount > 0 else heightDiff
+			balanceCount += increment
 			ascendingPointer = ascendingPointer.getParent()
 		return balanceCount
 
