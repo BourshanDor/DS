@@ -610,7 +610,7 @@ class AVLTreeList(object):
 				self.rotateRight(node.getRight())
 				rotationsPerformed += 1
 			self.rotateLeft(node)
-			rotationsPerformed = +1
+			rotationsPerformed += 1
 		return rotationsPerformed
 
 	""" 

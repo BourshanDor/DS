@@ -6,14 +6,14 @@ import random
 
 class TestAVLTreesList(unittest.TestCase):
 
-    def test_empty(self):
-
-        list = AVLTreeList()
-        self.assertEqual(list.empty(), True)
-        list.insert(0,'a')
-        self.assertEqual(list.empty(), False)
-        list.delete(0)
-        self.assertEqual(list.empty(), True)
+    # def test_empty(self):
+    #
+    #     list = AVLTreeList()
+    #     self.assertEqual(list.empty(), True)
+    #     list.insert(0,'a')
+    #     self.assertEqual(list.empty(), False)
+    #     list.delete(0)
+    #     self.assertEqual(list.empty(), True)
 
     # def test_retrieve(self):
     #
@@ -51,15 +51,22 @@ class TestAVLTreesList(unittest.TestCase):
     #             break
 
 
+    def test_insert(self):
+        list = AVLTreeList()
+
+        self.assertEqual(list.insert(list.length(), '3'), 0)
+        self.assertEqual(list.insert(list.length(), '1'), 1)
+        self.assertEqual(list.insert(1, '2'),4)
 
 
-    def testSearch(self):
-        vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', 'T', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18',
-                '19', '20', '21', '22']
-        tr = AVLTreeList()
-        for i in range(len(vals)):
-            tr.insert(i, vals[i])
-        print(tr.search('T'))
+
+    # def testSearch(self):
+    #     vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', 'T', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18',
+    #             '19', '20', '21', '22']
+    #     tr = AVLTreeList()
+    #     for i in range(len(vals)):
+    #         tr.insert(i, vals[i])
+    #     print(tr.search('T'))
 
 
 
