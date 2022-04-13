@@ -696,16 +696,17 @@ class AVLTreeList(object):
 
 
 	def specialRotationRight(self, axisNode):
+		b = axisNode.getRight()  ##b
 
-		movingRightSub = movingNode.getRight() ##b
 
 		zPar = self.getParent()
 		axisNode.setRight(axisParent)
-		self.setLeft(movingRightSub)
+		self.setLeft(b)
 		axisNode.setRight(self)
 		axisNode.setParent(zPar)
 
 		self.recalculate()
+		axisNode.recalculate()
 		axisNode.recalculate()
 
 
