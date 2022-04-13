@@ -212,10 +212,17 @@ class AVLNode(object) :
 	Recalculates node's height and size, used after changes in tree.
 	O(1) runtime complexity since both fields are calculated in constant time
 	based only on direct children of the node.
+	@return: 0 if height did not change, 1 if it did
 	"""
 	def recalculate(self):
+		oldHeight = self.height
+		newHeight = self.getHeight()
 		self.setSize(self.getSize())
-		self.setHeight(self.getHeight())
+		self.setHeight(newHeight)
+		if oldHeight == newHeight:
+			return 0
+		else:
+			return 1
 
 	"""
 	Checks if node is to its parent's right or left
@@ -319,14 +326,16 @@ class AVLTreeList(object):
 	Runtime: O(logn).
 	@param ascendingPointer: position to start traversing upwards from
 	@rtype: int
-	@returns: rotations performed
+	@returns: balance actions performed
 	"""
-	def balanceTree(self, ascendingPointer, rotationCounter = 0):
+	def balanceTree(self, ascendingPointer, balanceCount=0):
 		while ascendingPointer is not None:
-			ascendingPointer.recalculate()
-			rotationCounter = rotationCounter + self.balanceNode(ascendingPointer)
+			heightDiff = ascendingPointer.recalculate()
+			rotationCount = self.balanceNode(ascendingPointer)
+			increment = rotationCount if rotationCount > 0 else heightDiff
+			balanceCount = balanceCount + increment
 			ascendingPointer = ascendingPointer.getParent()
-		return rotationCounter
+		return balanceCount
 
 	def deleteLeaf(self, leaf):
 		par = leaf.getParent()
