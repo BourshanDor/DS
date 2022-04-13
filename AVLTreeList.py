@@ -237,19 +237,6 @@ class AVLVirtualNode(AVLNode):
 		self.parent = par
 
 
-#
-# class AVLOrdedNode(AVLNode):
-# 	def __init__(self,value, index):
-# 		super().__init__(value)
-# 		self.index = index
-# 	def getIndex(self):
-# 		return self.index
-#
-# 	def setIndex(self, index):
-# 		self.index = index
-
-
-
 
 """
 A class implementing the ADT list, using an AVL tree.
@@ -323,15 +310,6 @@ class AVLTreeList(object):
 			where = descendingPointer.checkParentSide()
 			insertionNode.setParent(descendingPointer.getParent())
 			self.assignParentSide(insertionNode, where, allowRoot=False)
-
-####################Added for SearchTree########################
-		# existNodeInSearchTree = self.searchTree.search(val)
-		# if existNodeInSearchTree is not None:
-		# 	if i < existNodeInSearchTree.getIndex():
-		# 		existNodeInSearchTree.setIndex(i)
-		# else:
-		# 	self.searchTree.insert(val,i)
-##################################################################
 
 		# After inserting our node, we traverse the branch from it to up the root, balancing and recalculating fields.
 		return self.balanceTree(insertionNode, rotationCounter)
@@ -733,43 +711,3 @@ def joinTreeList(originalTree, treesToJoin, isLeft):
 		else:
 			join(originalTree, tup[0], tup[1])
 
-#
-#
-# class AVLSearchTree(AVLTreeList):
-#
-# 	def __init__(self):
-# 		super().__init__()
-#
-# 	def insert(self, value, index):
-# 		insertionNode = AVLOrdedNode(value, index)
-# 		if self.empty():
-# 			self.root = insertionNode
-# 			return
-# 		tmp = None
-# 		explorer = self.root
-# 		while explorer.isRealNode() :
-# 			tmp = explorer
-# 			if value > explorer.getValue() :
-# 				explorer = explorer.getRight()
-# 			else:
-# 				explorer = explorer.getLeft()
-#
-# 		insertionNode.setParent(tmp)
-# 		if value > tmp.getValue():
-# 			tmp.setRight(insertionNode)
-# 		else:
-# 			tmp.setLeft(insertionNode)
-# 		# After inserting our node, we traverse the branch from it to up the root, balancing and recalculating fields.
-# 		self.balanceTree(insertionNode)
-# 		return
-#
-# 	def search(self, val):
-# 		explorer = self.root
-# 		while explorer.isRealNode():
-# 			if explorer.getValue() == val:
-# 				return explorer
-# 			elif explorer.getValue() > val:
-# 				explorer = explorer.getLeft()
-# 			else:
-# 				explorer = explorer.getLeft()
-# 		return None
