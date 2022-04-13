@@ -76,7 +76,8 @@ class AVLNode(object) :
 
 	# TODO: Remember to update in insert function
 	def getHeight(self):
-		return -1 if not self.isRealNode() else max(self.getRight().getHeight(), self.getLeft().getHeight()) + 1
+		#return -1 if not self.isRealNode() else max(self.getRight().getHeight(), self.getLeft().getHeight()) + 1
+		return -1 if not self.isRealNode() else max(self.getRight().height, self.getLeft().height) + 1
 
 	"""returns the size
 	
@@ -333,6 +334,7 @@ class AVLTreeList(object):
 			heightDiff = ascendingPointer.recalculate()
 			rotationCount = self.balanceNode(ascendingPointer)
 			balanceCount = balanceCount + heightDiff + rotationCount
+			print(self)
 			ascendingPointer = ascendingPointer.getParent()
 		return balanceCount
 
@@ -373,17 +375,28 @@ class AVLTreeList(object):
 		successorRight = successor.getRight()
 		successorParent = successor.getParent()
 
-		side = node.checkParentSide()
-		if side == 0:
+		nodeSide = node.checkParentSide()
+		successorSide = successor.checkParentSide()
+		if nodeSide == 0:
 			self.root = successor
-		elif side == 1:
+		elif nodeSide == 1:
 			nodeParent.setRight(successor)
+			if successorSide == 1:
+				successorParent.setRight(node)
+			elif successorSide == -1:
+				successorParent.setLeft(node)
 		else:
 			nodeParent.setLeft(successor)
+			if successorSide == 1:
+				successorParent.setRight(node)
+			elif successorSide == -1:
+				successorParent.setLeft(node)
+
 
 		successor.setLeft(nodeLeft)
 		successor.setRight(nodeRight)
 		successor.setParent(nodeParent)
+
 
 		node.setLeft(successorLeft)
 		node.setRight(successorRight)
@@ -392,6 +405,7 @@ class AVLTreeList(object):
 			node.setParent(successor)
 			successor.setRight(node)
 		node.recalculate()
+		#print(successor.getHeight())
 		successor.recalculate()
 		return self.deleteByReference(node, rotationCounter)
 
@@ -660,6 +674,7 @@ class AVLTreeList(object):
 			if not allowRoot:
 				raise RuntimeError
 			self.setRoot(node)
+
 
 
 def join(leftTree, rightTree, x):

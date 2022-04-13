@@ -51,27 +51,51 @@ class TestAVLTreesList(unittest.TestCase):
     #             break
 
 
-    def test_insert(self):
+    # def test_insert(self):
+    #     list = AVLTreeList()
+    #
+    #     self.assertEqual(list.insert(list.length(), '3'), 0)
+    #     self.assertEqual(list.insert(list.length(), '1'), 1)
+    #     self.assertEqual(list.insert(1, '2'),4)
+    #
+    #     list = AVLTreeList()
+    #     vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', 'T', '9', '10', '11', '12', '13', '14', '15', '16', '17',
+    #             '18', '19', '20', '21', '22']
+    #
+    #     for i in range(len(vals)):
+    #         list.insert(i, vals[i])
+    #
+    #     self.assertEqual(list.insert(10, '***'), 5)
+    #     self.assertEqual(list.insert(11, 'Amir'), 4)
+    #     self.assertEqual(list.insert(9, 'Meaniean'), 1)
+    #     self.assertEqual(list.insert(12, 'WOW'), 6)
+    #     self.assertEqual(list.insert(26, 'Dani'), 0)
+    #     self.assertEqual(list.insert(25, 'Noam'), 1)
+    #
+
+    def test_delete(self):
+
         list = AVLTreeList()
 
-        self.assertEqual(list.insert(list.length(), '3'), 0)
-        self.assertEqual(list.insert(list.length(), '1'), 1)
-        self.assertEqual(list.insert(1, '2'),4)
+        vals = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10' , '11']
 
-        list = AVLTreeList()
-        vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', 'T', '9', '10', '11', '12', '13', '14', '15', '16', '17',
-                '18', '19', '20', '21', '22']
         for i in range(len(vals)):
             list.insert(i, vals[i])
+
         print(list)
-        self.assertEqual(list.insert(10, '***'), 5)
+        self.assertEqual(list.delete(0), 0)
         print(list)
-        self.assertEqual(list.insert(11, 'Amir'), 4)
+        print('**********************************************************')
+        self.assertEqual(list.delete(1), 2)
         print(list)
-        self.assertEqual(list.insert(9, 'Meaniean'), 1)
-        print(list)
-        self.assertEqual(list.insert(12, 'WOW'), 6)
-        print(list)
+        list.delete(1)
+
+
+
+
+
+
+
 
 
 
