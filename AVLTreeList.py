@@ -552,13 +552,15 @@ class AVLTreeList(object):
 	@returns: the first index that contains val, -1 if not found.
 	"""
 	def search(self, val):
-		# Idea: maintain a standard AVL tree
-		# with the values of the list-tree as keys
-		# and with pointers to the list nodes as values.
-		# TODO: Implement (forum says this is allowed)
-		# nodeInSearchTree = self.searchTree.search(val)
-		# return nodeInSearchTree.getIndex() if nodeInSearchTree is not None else -1
-		return None
+		index = 0
+		currentNode = self.first()
+		last = self.last()
+		while currentNode is not last:
+			if currentNode.getValue() == val:
+				return index
+			index += 1
+			currentNode = currentNode.successor()
+		return -1
 
 	"""returns the root of the tree representing the list
 

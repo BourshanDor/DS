@@ -15,45 +15,51 @@ class TestAVLTreesList(unittest.TestCase):
         list.delete(0)
         self.assertEqual(list.empty(), True)
 
-    def test_retrieve(self):
-
-        list = AVLTreeList()
-        lst = []
-
-        for i in range(100):
-            lst.append(str(random.randint(0,1000000)))
-
-        for i in range(100):
-            list.insert(i, lst[i])
-
-        for i in range(100):
-            self.assertEqual(list.retrieve(i), lst[i])
-            self.assertEqual(list.retrieve(i) is None, False)
-            self.assertEqual(list.retrieve(i) == '-1', False)
-        TheTragedyofCoriolanus = []
-        with open('The Tragedy of Coriolanus.txt', 'r') as f:
-            for line in f:
-                for word in line.split():
-                    TheTragedyofCoriolanus.append(word)
-
-        list2 = AVLTreeList()
-        i = 0
-        for st in TheTragedyofCoriolanus:
-            list2.insert(i, st)
-            i += 1
-            if i == 1000:
-                break
-        i = 0
-        for st in TheTragedyofCoriolanus:
-            self.assertEqual(list2.retrieve(i), st)
-            i += 1
-            if i == 1000:
-                break
-
-
+    # def test_retrieve(self):
+    #
+    #     list = AVLTreeList()
+    #     lst = []
+    #
+    #     for i in range(100):
+    #         lst.append(str(random.randint(0,1000000)))
+    #
+    #     for i in range(100):
+    #         list.insert(i, lst[i])
+    #
+    #     for i in range(100):
+    #         self.assertEqual(list.retrieve(i), lst[i])
+    #         self.assertEqual(list.retrieve(i) is None, False)
+    #         self.assertEqual(list.retrieve(i) == '-1', False)
+    #     TheTragedyofCoriolanus = []
+    #     with open('The Tragedy of Coriolanus.txt', 'r') as f:
+    #         for line in f:
+    #             for word in line.split():
+    #                 TheTragedyofCoriolanus.append(word)
+    #
+    #     list2 = AVLTreeList()
+    #     i = 0
+    #     for st in TheTragedyofCoriolanus:
+    #         list2.insert(i, st)
+    #         i += 1
+    #         if i == 10000:
+    #             break
+    #     i = 0
+    #     for st in TheTragedyofCoriolanus:
+    #         self.assertEqual(list2.retrieve(i), st)
+    #         i += 1
+    #         if i == 10000:
+    #             break
 
 
 
+
+    def testSearch(self):
+        vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', 'T', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18',
+                '19', '20', '21', '22']
+        tr = AVLTreeList()
+        for i in range(len(vals)):
+            tr.insert(i, vals[i])
+        print(tr.search('T'))
 
 
 
