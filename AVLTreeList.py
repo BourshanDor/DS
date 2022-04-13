@@ -304,7 +304,7 @@ class AVLTreeList(object):
 			self.root = insertionNode
 			return rotationCounter
 		if i == 0:
-			first = self.first()
+			first = self.firstByRefrence()
 			insertionNode.setParent(first)
 			first.setLeft(insertionNode)
 		else:
@@ -443,6 +443,11 @@ class AVLTreeList(object):
 	@returns: the value of the first item, None if the list is empty
 	"""
 	def first(self):
+		return self.firstByRefrence().getValue()
+
+
+
+	def firstByRefrence(self):
 		if self.empty():
 			return None
 		next_left = self.root.getLeft()
@@ -456,6 +461,10 @@ class AVLTreeList(object):
 	@returns: the value of the last item, None if the list is empty
 	"""
 	def last(self):
+		return self.lastByRefrence().getValue()
+
+
+	def lastByRefrence(self):
 		if self.empty():
 			return None
 		next_right = self.root.getRight()
@@ -472,8 +481,8 @@ class AVLTreeList(object):
 		arr = []
 		if self.empty():
 			return arr
-		i = self.first()
-		last = self.last()
+		i = self.firstByRefrence()
+		last = self.lastByRefrence()
 		while i is not last:
 			arr.append(i.getValue())
 			i = i.successor()
@@ -541,7 +550,7 @@ class AVLTreeList(object):
 			return heightDiff
 		if lst.empty():
 			return heightDiff
-		x = self.last()
+		x = self.lastByRefrence()
 		self.delete(self.length()-1)
 		join(self, lst, x)
 		return heightDiff
@@ -555,8 +564,8 @@ class AVLTreeList(object):
 	"""
 	def search(self, val):
 		index = 0
-		currentNode = self.first()
-		last = self.last()
+		currentNode = self.firstByRefrence()
+		last = self.lastByRefrence()
 		while currentNode is not last:
 			if currentNode.getValue() == val:
 				return index
@@ -727,7 +736,9 @@ def handleEmptyJoin(leftTree, rightTree, x):
 
 def joinTreeList(originalTree, treesToJoin, isLeft):
 	for tup in treesToJoin:
-		tup[0].getRoot().setParent(None)
+		if tup[0].getRoot() :
+			tup[0].getRoot().setParent(None)
+
 		tup[1].setLeft(AVLVirtualNode(tup[1]))
 		tup[1].setRight(AVLVirtualNode(tup[1]))
 		tup[1].setParent(None)
