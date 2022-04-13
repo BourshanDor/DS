@@ -334,7 +334,6 @@ class AVLTreeList(object):
 			heightDiff = ascendingPointer.recalculate()
 			rotationCount = self.balanceNode(ascendingPointer)
 			balanceCount = balanceCount + heightDiff + rotationCount
-#			print(self)
 			ascendingPointer = ascendingPointer.getParent()
 		return balanceCount
 
@@ -356,6 +355,8 @@ class AVLTreeList(object):
 		side = node.checkParentSide()
 		if side == 0:
 			self.root = child
+			child.setParent(par)
+
 			return
 		if side == 1:
 			par.setRight(child)
