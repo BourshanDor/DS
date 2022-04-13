@@ -169,17 +169,28 @@ class TestAVLTreesList(unittest.TestCase):
     #
 
     def test_split(self):
-        vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-        list = AVLTreeList()
+        # vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+        # list = AVLTreeList()
+        #
+        # for i in range(len(vals)):
+        #     list.insert(i, vals[i])
+        # lst = list.split(0)
+        # self.assertListEqual(lst[0].listToArray(), [])
+        # self.assertEqual(lst[1].listToArray(), '0')
+        # self.assertEqual(lst[2].listToArray(), ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'])
+        #
+        tallerTree = AVLTreeList()
+        tallerTree.insert(0,'0')
+        tallerTree.insert(0,'1')
+        tallerTree.insert(0,'2')
+        tallerTree.insert(0,'21')
 
-        for i in range(len(vals)):
-            list.insert(i, vals[i])
-        lst = list.split(0)
-        self.assertListEqual(lst[0].listToArray(), [])
-        self.assertEqual(lst[1].listToArray(), '0')
-        self.assertEqual(lst[2].listToArray(), ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'])
-
-
+        print(tallerTree)
+        smallerTree = AVLTreeList()
+        smallerTree.insert(0, '3')
+        a = AVLNode('3')
+        join(smallerTree, tallerTree, a)
+        print(smallerTree)
 
 
 
