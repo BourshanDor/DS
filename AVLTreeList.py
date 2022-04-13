@@ -85,7 +85,7 @@ class AVLNode(object) :
 	@returns: the size of self, 0 if the node is virtual
 	"""
 	def getSize(self):
-		return 0 if not self.isRealNode() else self.left.getSize() + self.right.getSize() + 1
+		return 0 if not self.isRealNode() else self.getLeft().size + self.getRight().size + 1
 
 	"""return the balance factor of node, AVLTrees def that every node fulfill |BF(v)| <= 1 
 
@@ -334,7 +334,7 @@ class AVLTreeList(object):
 			heightDiff = ascendingPointer.recalculate()
 			rotationCount = self.balanceNode(ascendingPointer)
 			balanceCount = balanceCount + heightDiff + rotationCount
-			print(self)
+#			print(self)
 			ascendingPointer = ascendingPointer.getParent()
 		return balanceCount
 
