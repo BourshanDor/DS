@@ -498,8 +498,8 @@ class AVLTreeList(object):
 	@returns: a list [left, val, right], where left is an AVLTreeList representing the list until index i-1,
 	right is an AVLTreeList representing the list from index i+1, and val is the value at the i'th index.
 	"""
-	def split(self, i):
-		pivot = self.retrieveByIndex(i)
+	def split(self, i, byReference=False):
+		pivot = self.retrieveByIndex(i) if not byReference else i
 		leftTree, rightTree = AVLTreeList(), AVLTreeList()
 		leftTree.setRoot(pivot.getLeft())
 		rightTree.setRoot(pivot.getRight())
@@ -518,9 +518,15 @@ class AVLTreeList(object):
 				rightJoin.append([siblingTree, par])
 
 			ascendingPointer = ascendingPointer.getParent()
-		joinTreeList(leftTree, leftJoin, True)
-		joinTreeList(rightTree, rightJoin, False)
-		return [leftTree, pivot.getValue(), rightTree]
+		j1 = joinTreeList(leftTree, leftJoin, True)
+		j2 = joinTreeList(rightTree, rightJoin, False)
+
+		total = j1[0] + j2[0]
+		count = j1[1] + j2[1]
+		average = total / count
+		maximum = max(j1[2], j2[2])
+		return [average, maximum]
+		#return [leftTree, pivot.getValue(), rightTree]
 
 
 	"""concatenates lst to self
@@ -681,10 +687,11 @@ class AVLTreeList(object):
 
 def join(leftTree, rightTree, x):
 	if handleEmptyJoin(leftTree, rightTree, x):
-		return
+		return 0
 	leftIsTaller = leftTree.root.getHeight() >= rightTree.root.getHeight()
 	shorter = rightTree if leftIsTaller else leftTree
 	taller = leftTree if leftIsTaller else rightTree
+	heightDiff = abs(leftTree.root.getHeight() - rightTree.root.getHeight())
 	node = taller.root
 	while node.getHeight() > shorter.root.getHeight():
 		node = node.getRight() if leftIsTaller else node.getLeft()
@@ -709,6 +716,7 @@ def join(leftTree, rightTree, x):
 	taller.balanceTree(x)
 	# set what was the shorter tree to point to the joined tree to avoid bugs
 	shorter.setRoot(taller.root)
+	return heightDiff
 
 def handleEmptyJoin(leftTree, rightTree, x):
 	if leftTree.empty():
@@ -726,13 +734,22 @@ def handleEmptyJoin(leftTree, rightTree, x):
 	return False
 
 def joinTreeList(originalTree, treesToJoin, isLeft):
+	total = 0
+	count = 0
+	maximum = 0
+	j = 0
 	for tup in treesToJoin:
-		tup[0].getRoot().setParent(None)
+		if tup[0].getRoot():
+			tup[0].getRoot().setParent(None)
 		tup[1].setLeft(AVLVirtualNode(tup[1]))
 		tup[1].setRight(AVLVirtualNode(tup[1]))
 		tup[1].setParent(None)
 		if isLeft:
-			join(tup[0], originalTree, tup[1])
+			j = join(tup[0], originalTree, tup[1])
 		else:
-			join(originalTree, tup[0], tup[1])
+			j = join(originalTree, tup[0], tup[1])
+		total += j
+		count += 1
+		maximum = max(maximum, j)
+	return [total, count, maximum]
 

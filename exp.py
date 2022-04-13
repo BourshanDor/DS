@@ -29,6 +29,7 @@ def insertionsAndDeletions(tr: AVLTreeList, n: int):
             total += tr.delete(index)
     return total
 
+
 def q1a():
     print("TESTING INSERTIONS")
     for i in range(10):
@@ -53,10 +54,27 @@ def q1c():
 
 
 def q2a():
-    print("TESTING ")
+    print("TESTING SPLITS AND JOINS")
+    for i in range(10):
+        print("Iteration:", i + 1)
+        tr1 = AVLTreeList()
+        tr2 = AVLTreeList()
+        n = 1000 * (2 ** (i+1))
+        for i in range(n):
+            insertionIndex = random.randrange(0, i) if i > 0 else 0
+            tr1.insert(insertionIndex, str(i))
+            tr2.insert(insertionIndex, str(i))
 
-q1a()
-print("\n\n\n")
-q1b()
-print("\n\n\n")
-q1c()
+        leftRoot = tr2.getRoot().getLeft()
+        tr2Left = AVLTreeList()
+        tr2Left.setRoot(leftRoot)
+        leftNode = tr2Left.last()
+
+        [randAvg, randMax] = tr1.split(random.randrange(0, tr1.length()))
+        print("RANDOM AVERAGE:", randAvg, ". RANDOM MAX:", randMax)
+        [leftAvg, leftMax] = tr2.split(leftNode, True)
+        print("LEFT AVERAGE:", leftAvg, ". LEFT MAX:", leftMax)
+
+
+
+q2a()
