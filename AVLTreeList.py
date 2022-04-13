@@ -736,7 +736,7 @@ def handleEmptyJoin(leftTree, rightTree, x):
 
 def joinTreeList(originalTree, treesToJoin, isLeft):
 	for tup in treesToJoin:
-		if tup[0].getRoot() :
+		if tup[0].getRoot() is not None :
 			tup[0].getRoot().setParent(None)
 
 		tup[1].setLeft(AVLVirtualNode(tup[1]))
