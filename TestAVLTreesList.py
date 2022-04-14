@@ -170,7 +170,7 @@ class TestAVLTreesList(unittest.TestCase):
     def testSplitCrashes(self):
 
         tr = AVLTreeList()
-        tr.insert(0, "-1")
+        tr.insert(0, "A")
         tr.insert(0, "0")
         tr.insert(1, "1")
         tr.insert(0, "2")
@@ -186,27 +186,29 @@ class TestAVLTreesList(unittest.TestCase):
         #     tr.insert(index, str(j))
         #     print("Iteration:", j, "inserted at index:", index)
         print(tr)
-        tr.split(8)
+        print(tr.split(8))
 
 
-    # def testLotsaSplitCrashes(self):
-    #     for i in range(10):
-    #         print("Iteration:", i + 1)
-    #         tr1 = AVLTreeList()
-    #         tr2 = AVLTreeList()
-    #         n = 1000 * (2 ** (i + 1))
-    #         for i in range(n):
-    #             insertionIndex = random.randrange(0, i) if i > 0 else 0
-    #             tr1.insert(insertionIndex, str(i))
-    #             tr2.insert(insertionIndex, str(i))
-    #
-    #         # leftRoot = tr2.getRoot().getLeft()
-    #         # tr2Left = AVLTreeList()
-    #         # tr2Left.setRoot(leftRoot)
-    #         # leftNode = tr2Left.lastByReference()
-    #
-    #         tr1.split(random.randrange(0, tr1.length()))
-    #         tr2.split(tr2.length()//2)
+
+    def testLotsaSplitCrashes(self):
+        for i in range(10):
+            print("Iteration:", i + 1)
+            tr1 = AVLTreeList()
+            tr2 = AVLTreeList()
+            n = 1000 * (2 ** (i))
+            for i in range(n):
+                insertionIndex = random.randrange(0, i) if i > 0 else 0
+                tr1.insert(insertionIndex, str(i))
+                tr2.insert(insertionIndex, str(i))
+
+            # leftRoot = tr2.getRoot().getLeft()
+            # tr2Left = AVLTreeList()
+            # tr2Left.setRoot(leftRoot)
+            # leftNode = tr2Left.lastByReference()
+
+            tr1.split(random.randrange(0, tr1.length()))
+            tr2.split(tr2.length()//2)
+            #join(tr1, tr2, AVLNode("Q"))
 
     def test_split(self):
         # vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
