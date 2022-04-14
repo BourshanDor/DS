@@ -627,7 +627,7 @@ class AVLTreeList(object):
 				rotationsPerformed += 1
 			if leftBF == 0:
 				print("HEGATI LEPOHHHH")
-				self.specialRotation(self.getLeft())
+				self.specialRotation(node.getLeft())
 				return 0
 			self.rotateRight(node)
 			rotationsPerformed += 1
@@ -699,15 +699,16 @@ class AVLTreeList(object):
 
 	def specialRotationRight(self, axisNode):
 		b = axisNode.getRight()  ##b
-		zPar = self.getParent()
-		self.setLeft(b)
-		axisNode.setRight(self)
-		axisNode.setParent(zPar)
+		zPar = axisNode.getParent()
+		axisNode.setLeft(b)
+		b.setRight(axisNode)
+		b.setParent(zPar)
 
-		self.recalculate()
 		axisNode.recalculate()
-		axisNode.recalculate()
+		b.recalculate()
 
+	def specialRotationLeft(self, axisNode):
+		return
 
 def join(leftTree, rightTree, x):
 	if handleEmptyJoin(leftTree, rightTree, x):
@@ -737,7 +738,7 @@ def join(leftTree, rightTree, x):
 		else:
 			taller.setRoot(x)
 
-	taller.balanceTree(x)
+	#taller.balanceTree(x)
 	# set what was the shorter tree to point to the joined tree to avoid bugs
 	shorter.setRoot(taller.root)
 	return heightDiff
