@@ -282,7 +282,7 @@ class AVLTreeList(object):
 	@returns: True if the list is empty, False otherwise
 	"""
 	def empty(self):
-		return not isinstance(self.root, AVLNode)
+		return not isinstance(self.root, AVLNode) or isinstance(self.root, AVLVirtualNode)
 
 	"""retrieves the value of the i'th item in the list
 

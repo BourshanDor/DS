@@ -3,7 +3,6 @@ from AVLTreeList import *
 import random
 
 
-
 class TestAVLTreesList(unittest.TestCase):
     #
     # def test_empty(self):
@@ -168,6 +167,47 @@ class TestAVLTreesList(unittest.TestCase):
     #         list.delete(j)
     #
 
+    def testSplitCrashes(self):
+
+        tr = AVLTreeList()
+        tr.insert(0, "-1")
+        tr.insert(0, "0")
+        tr.insert(1, "1")
+        tr.insert(0, "2")
+        tr.insert(2, "3")
+        tr.insert(1, "4")
+        tr.insert(0, "5")
+        tr.insert(6, "6")
+        tr.insert(1, "7")
+        tr.insert(4, "8")
+
+        # for j in range(9):
+        #     index = random.randrange(0, tr.length())
+        #     tr.insert(index, str(j))
+        #     print("Iteration:", j, "inserted at index:", index)
+        print(tr)
+        tr.split(8)
+
+
+    # def testLotsaSplitCrashes(self):
+    #     for i in range(10):
+    #         print("Iteration:", i + 1)
+    #         tr1 = AVLTreeList()
+    #         tr2 = AVLTreeList()
+    #         n = 1000 * (2 ** (i + 1))
+    #         for i in range(n):
+    #             insertionIndex = random.randrange(0, i) if i > 0 else 0
+    #             tr1.insert(insertionIndex, str(i))
+    #             tr2.insert(insertionIndex, str(i))
+    #
+    #         # leftRoot = tr2.getRoot().getLeft()
+    #         # tr2Left = AVLTreeList()
+    #         # tr2Left.setRoot(leftRoot)
+    #         # leftNode = tr2Left.lastByReference()
+    #
+    #         tr1.split(random.randrange(0, tr1.length()))
+    #         tr2.split(tr2.length()//2)
+
     def test_split(self):
         # vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
         # list = AVLTreeList()
@@ -180,10 +220,10 @@ class TestAVLTreesList(unittest.TestCase):
         # self.assertEqual(lst[2].listToArray(), ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'])
         #
         tallerTree = AVLTreeList()
-        tallerTree.insert(0,'0')
-        tallerTree.insert(0,'1')
-        tallerTree.insert(0,'2')
-        tallerTree.insert(0,'21')
+        tallerTree.insert(0, '0')
+        tallerTree.insert(0, '1')
+        tallerTree.insert(0, '2')
+        tallerTree.insert(0, '21')
 
         print(tallerTree)
         smallerTree = AVLTreeList()
@@ -192,12 +232,9 @@ class TestAVLTreesList(unittest.TestCase):
         join(smallerTree, tallerTree, a)
         print(smallerTree)
 
-
-
-
     def test_concat(self):
-        #T1 = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']
-        #T2 = ['12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22']
+        # T1 = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']
+        # T2 = ['12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22']
         T1 = []
         T2 = ['A']
 
@@ -205,37 +242,16 @@ class TestAVLTreesList(unittest.TestCase):
         tr2 = AVLTreeList()
 
         for i in range(len(T2)):
-            tr2.insert(i,T2[i])
+            tr2.insert(i, T2[i])
 
         for i in range(len(T1)):
-            tr1.insert(i,T1[i])
+            tr1.insert(i, T1[i])
 
-       # print(tr1)
+        # print(tr1)
         print(tr2)
         print(tr1.concat(tr2))
         print(tr1)
         print(tr1.listToArray())
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #
@@ -395,5 +411,4 @@ class TestAVLTreesList(unittest.TestCase):
 
 
 if __name__ == '__main__':
-
     unittest.main()
