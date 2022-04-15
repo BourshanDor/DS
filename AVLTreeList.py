@@ -275,6 +275,8 @@ class AVLTreeList(object):
 			out = out + row + "\n"
 		return out
 
+	def append(self, val):
+		self.insert(self.length(), str(val))
 	"""returns whether the list is empty
 
 	@rtype: bool
@@ -473,7 +475,7 @@ class AVLTreeList(object):
 	@returns: the value of the first item, None if the list is empty
 	"""
 	def first(self):
-		return self.firstByReference().getValue()
+		return self.firstByReference().getValue() if self.firstByReference() is not None else None
 
 	"""
 	Returns a reference to the first item in the list, or None if the list is empty.
@@ -494,7 +496,7 @@ class AVLTreeList(object):
 	@returns: the value of the last item, None if the list is empty
 	"""
 	def last(self):
-		return self.lastByReference().getValue()
+		return self.lastByReference().getValue() if self.lastByReference() is not None else None
 
 	"""
 	Returns a reference to the last item in the list, or None if the list is empty.
@@ -622,7 +624,8 @@ class AVLTreeList(object):
 	@returns: the root, None if the list is empty
 	"""
 	def getRoot(self):
-		return self.root if self.root.isRealNode() else None
+
+		return self.root if not self.empty() else None
 
 	def setRoot(self, newNode):
 		self.root = newNode
