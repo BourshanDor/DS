@@ -550,7 +550,11 @@ class AVLTreeList(object):
 		pivot = self.retrieveByIndex(i)
 		leftTree, rightTree = AVLTreeList(), AVLTreeList()
 		leftTree.setRoot(pivot.getLeft())
+		# Make sure to detach the new roots from the old parents!
+		leftTree.getRoot() and leftTree.getRoot().setParent(None)
 		rightTree.setRoot(pivot.getRight())
+		# Detach from old parents
+		rightTree.getRoot() and rightTree.getRoot().setParent(None)
 		ascendingPointer = pivot
 		leftJoin = []
 		rightJoin = []
@@ -560,6 +564,8 @@ class AVLTreeList(object):
 			siblingRoot = par.getLeft() if parentSide == 1 else par.getRight()
 			siblingTree = AVLTreeList()
 			siblingTree.setRoot(siblingRoot)
+			# Detach from old parents
+			siblingTree.getRoot() and siblingTree.getRoot().setParent(None)
 			if parentSide == 1:
 				leftJoin.append([siblingTree, par])
 			else:
@@ -803,7 +809,8 @@ def join(leftTree, rightTree, connectingNode):
 			par.setLeft(connectingNode)
 		else:
 			taller.setRoot(connectingNode)
-	# FIXME: hegati lepoh
+			taller.getRoot().setParent(None)
+
 	taller.balanceTree(connectingNode)
 	# set what was the shorter tree to point to the joined tree to avoid bugs
 	shorter.setRoot(taller.root)
