@@ -34,7 +34,7 @@ class AVLNode(object):
 	"""printable representation of the AVLNode.
 	"""
 	def __repr__(self):
-		return self.getValue()
+		return self.getValue() or "#"
 
 	"""returns the left child
 	
@@ -93,7 +93,6 @@ class AVLNode(object):
 	@:returns: The balance factor of the node
 	"""
 	def getBF(self):
-
 		return self.getLeft().getHeight() - self.getRight().getHeight() if self.isRealNode() else 0
 
 	""" 
@@ -339,7 +338,7 @@ class AVLTreeList(object):
 		@rtype: int
 		@return: balance operations performed
 		"""
-		while ascendingPointer is not None:
+		while ascendingPointer is not None and ascendingPointer.getParent() is not ascendingPointer:
 			heightDiff = ascendingPointer.recalculate()
 			rotationCount = self.balanceNode(ascendingPointer)
 			increment = rotationCount if rotationCount > 0 else heightDiff
@@ -566,11 +565,11 @@ class AVLTreeList(object):
 
 			ascendingPointer = ascendingPointer.getParent()
 
-		if isinstance(leftTree.root , AVLVirtualNode):
+		if isinstance(leftTree.root, AVLVirtualNode):
 			leftTree = AVLTreeList()
 
-		if isinstance(rightTree.root , AVLVirtualNode):
-			rightTreeTree = AVLTreeList()
+		if isinstance(rightTree.root, AVLVirtualNode):
+			rightTree = AVLTreeList()
 
 		joinTreeList(leftTree, leftJoin, True)
 		joinTreeList(rightTree, rightJoin, False)
@@ -774,7 +773,6 @@ def join(leftTree, rightTree, connectingNode):
 	@rtype: None
 	"""
 	if handleEmptyJoin(leftTree, rightTree, connectingNode):
-		print("Here")
 		return
 	leftIsTaller = leftTree.root.getHeight() >= rightTree.root.getHeight()
 	shorter = rightTree if leftIsTaller else leftTree
@@ -824,14 +822,12 @@ def handleEmptyJoin(leftTree, rightTree, connectingNode):
 			rightTree.setRoot(connectingNode)
 			return True
 		rightTree.insert(0, connectingNode.getValue())
-		a = rightTree.balanceTree(rightTree.retrieveByIndex(0))
-		print(a)
+		rightTree.balanceTree(rightTree.retrieveByIndex(0))
 		leftTree.setRoot(rightTree.root)
 		return True
 	elif rightTree.empty():
 		leftTree.insert(leftTree.length(), connectingNode.getValue())
-		a = leftTree.balanceTree(leftTree.retrieveByIndex(leftTree.length()-1))
-		print(a)
+		leftTree.balanceTree(leftTree.retrieveByIndex(leftTree.length()-1))
 		rightTree.setRoot(leftTree.root)
 		return True
 	return False
