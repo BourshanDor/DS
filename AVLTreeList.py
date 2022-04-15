@@ -565,6 +565,13 @@ class AVLTreeList(object):
 				rightJoin.append([siblingTree, par])
 
 			ascendingPointer = ascendingPointer.getParent()
+
+		if isinstance(leftTree.root , AVLVirtualNode):
+			leftTree = AVLTreeList()
+
+		if isinstance(rightTree.root , AVLVirtualNode):
+			rightTreeTree = AVLTreeList()
+
 		joinTreeList(leftTree, leftJoin, True)
 		joinTreeList(rightTree, rightJoin, False)
 		return [leftTree, pivot.getValue(), rightTree]
@@ -767,6 +774,7 @@ def join(leftTree, rightTree, connectingNode):
 	@rtype: None
 	"""
 	if handleEmptyJoin(leftTree, rightTree, connectingNode):
+		print("Here")
 		return
 	leftIsTaller = leftTree.root.getHeight() >= rightTree.root.getHeight()
 	shorter = rightTree if leftIsTaller else leftTree
@@ -815,11 +823,15 @@ def handleEmptyJoin(leftTree, rightTree, connectingNode):
 			leftTree.setRoot(connectingNode)
 			rightTree.setRoot(connectingNode)
 			return True
-		rightTree.insert(0, connectingNode)
+		rightTree.insert(0, connectingNode.getValue())
+		a = rightTree.balanceTree(rightTree.retrieveByIndex(0))
+		print(a)
 		leftTree.setRoot(rightTree.root)
 		return True
 	elif rightTree.empty():
-		leftTree.insert(leftTree.length(), connectingNode)
+		leftTree.insert(leftTree.length(), connectingNode.getValue())
+		a = leftTree.balanceTree(leftTree.retrieveByIndex(leftTree.length()-1))
+		print(a)
 		rightTree.setRoot(leftTree.root)
 		return True
 	return False
