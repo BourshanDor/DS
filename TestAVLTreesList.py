@@ -108,6 +108,8 @@ class TestAVLTreesList(unittest.TestCase):
         for i in range(len(vals)):
             self.assertEqual(list.first(), vals[i])
             list.delete(0)
+
+
     def test_last(self):
 
         list = AVLTreeList()

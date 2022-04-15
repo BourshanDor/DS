@@ -20,7 +20,7 @@ class testAVLList(unittest.TestCase):
     twentylist = []
 
     for i in range(20):
-        twentylist.append(i)
+        twentylist.append(str(i))
         twentyTree.append(i)
 
     def in_order(self, tree, node, func):
@@ -104,7 +104,7 @@ class testAVLList(unittest.TestCase):
 
         for i in range(3):
             T1.append(i)
-            L1.append(i)
+            L1.append(str(i))
             self.compare_with_list_by_in_order(T1, L1)
             self.compare_with_list_by_retrieve(T1, L1)
 
@@ -112,8 +112,8 @@ class testAVLList(unittest.TestCase):
             T3 = AVLTreeList()
             L3 = []
             for i in range(j):
-                T3.insert(T3.length(), i)
-                L3.insert(len(L3), i)
+                T3.insert(T3.length(), str(i))
+                L3.insert(len(L3), str(i))
                 self.compare_with_list_by_retrieve(T3, L3)
                 self.compare_with_list_by_in_order(T3, L3)
 
@@ -204,7 +204,7 @@ class testAVLList(unittest.TestCase):
             T1.append(i)
         T1.delete(0)
 
-        self.assertEqual(T1.getRoot().getValue(), 1)
+        self.assertEqual(T1.getRoot().getValue(), '1')
         T1.delete(0)
         self.assertIsNone(T1.getRoot())
 
@@ -212,7 +212,7 @@ class testAVLList(unittest.TestCase):
         for i in range(2):
             T1.append(i)
         T1.delete(1)
-        self.assertEqual(T1.getRoot().getValue(), 0)
+        self.assertEqual(T1.getRoot().getValue(), '0')
         T1.delete(0)
         self.assertIsNone(T1.getRoot())
 
@@ -221,7 +221,7 @@ class testAVLList(unittest.TestCase):
             T1.append(0)
 
         T1.delete(0)
-        self.assertEqual(T1.getRoot().getValue(), 0)
+        self.assertEqual(T1.getRoot().getValue(), '0')
         T1.delete(0)
         self.assertIsNone(T1.getRoot())
 
@@ -231,7 +231,7 @@ class testAVLList(unittest.TestCase):
             L = []
             for i in range(j):
                 T.append(i)
-                L.append(i)
+                L.append(str(i))
 
             while not T.empty():
                 self.compare_with_list_by_in_order(T, L)
@@ -248,7 +248,7 @@ class testAVLList(unittest.TestCase):
         L = []
         for i in range(100):
             T.append(i)
-            L.append(i)
+            L.append(str(i))
 
         while not T.empty():
             self.compare_with_list_by_in_order(T, L)
@@ -266,7 +266,7 @@ class testAVLList(unittest.TestCase):
             L = []
             for i in range(j):
                 T.append(i)
-                L.append(i)
+                L.append(str(i))
 
             while not T.empty():
                 self.compare_with_list_by_in_order(T, L)
@@ -283,7 +283,7 @@ class testAVLList(unittest.TestCase):
         L = []
         for i in range(100):
             T.append(i)
-            L.append(i)
+            L.append(str(i))
 
         while not T.empty():
             self.compare_with_list_by_in_order(T, L)
@@ -301,7 +301,7 @@ class testAVLList(unittest.TestCase):
             L = []
             for i in range(j):
                 T.append(i)
-                L.append(i)
+                L.append(str(i))
 
             while not T.empty():
                 self.compare_with_list_by_in_order(T, L)
@@ -319,7 +319,7 @@ class testAVLList(unittest.TestCase):
 
         for i in range(100):
             T.append(i)
-            L.append(i)
+            L.append(str(i))
 
         while not T.empty():
             self.compare_with_list_by_in_order(T, L)
@@ -336,7 +336,7 @@ class testAVLList(unittest.TestCase):
         L = []
         for i in range(100):
             T.append(i)
-            L.append(i)
+            L.append(str(i))
         cnt = 0
         while not T.empty():
             self.compare_with_list_by_in_order(T, L)
@@ -900,10 +900,10 @@ class testAVLList(unittest.TestCase):
 
     def test_search_basic(self):
         self.assertEqual(-1, self.emptyList.search(None))
-        self.assertEqual(-1, self.emptyList.search(20))
+        self.assertEqual(-1, self.emptyList.search('20'))
         for i in range(20):
-            self.assertEqual(i, self.twentyTree.search(i))
-        self.assertEqual(-1, self.twentyTree.search(21))
+            self.assertEqual(i, self.twentyTree.search(str(i)))
+        self.assertEqual(-1, self.twentyTree.search('21'))
 
     def test_search_after_insertion_at_start(self):
         T2 = AVLTreeList()
@@ -921,7 +921,7 @@ class testAVLList(unittest.TestCase):
         L = []
         for i in range(50):
             T.append(i)
-            L.append(i)
+            L.append(str(i))
 
         for i in range(49):
             T.delete(0)
@@ -936,7 +936,7 @@ class testAVLList(unittest.TestCase):
 
         for i in range(50):
             T.append(i)
-            L.append(i)
+            L.append(str(i))
             for j in range(len(L)):
                 self.assertEqual(T.search(L[j]), j)
             self.assertEqual(-1, T.search(-20))
@@ -946,8 +946,8 @@ class testAVLList(unittest.TestCase):
         L = []
 
         for i in range(50):
-            T.append(i)
-            L.append(i)
+            T.append(str(i))
+            L.append(str(i))
 
         for i in range(49):
             T.delete(T.length()-1)
@@ -961,8 +961,8 @@ class testAVLList(unittest.TestCase):
         L = []
 
         for i in range(50):
-            T.insert(i//2, i)
-            L.insert(i//2, i)
+            T.insert(i//2, str(i))
+            L.insert(i//2, str(i))
             for j in range(len(L)):
                 self.assertEqual(T.search(L[j]), j)
             self.assertEqual(-1, T.search(-20))
@@ -972,8 +972,8 @@ class testAVLList(unittest.TestCase):
         L = []
 
         for i in range(50):
-            T.insert(0, i)
-            L.insert(0, i)
+            T.insert(0, str(i))
+            L.insert(0, str(i))
 
         for i in range(49):
             T.delete(T.length()//2)
@@ -988,20 +988,20 @@ class testAVLList(unittest.TestCase):
 
         for i in range(200):
             if i % 5 == 0:
-                T.insert(0, i)
-                L.insert(0, i)
+                T.insert(0, str(i))
+                L.insert(0, str(i))
             elif i % 5 == 1:
                 T.append(i)
-                L.append(i)
+                L.append(str(i))
             elif i % 5 == 2:
-                T.insert(i//2, i)
-                L.insert(i//2, i)
+                T.insert(i//2, str(i))
+                L.insert(i//2, str(i))
             elif i % 5 == 3:
-                T.insert(i//3, i)
-                L.insert(i//3, i)
+                T.insert(i//3, str(i))
+                L.insert(i//3, str(i))
             else:
-                T.insert(i//7, i)
-                L.insert(i//7, i)
+                T.insert(i//7, str(i))
+                L.insert(i//7, str(i))
             for j in range(len(L)):
                 self.assertEqual(T.search(L[j]), j)
             self.assertEqual(-1, T.search(-20))
@@ -1011,8 +1011,8 @@ class testAVLList(unittest.TestCase):
         L = []
 
         for i in range(100):
-            T.insert(0, i)
-            L.insert(0, i)
+            T.insert(0, str(i))
+            L.insert(0, str(i))
 
         for i in range(99):
             if i % 5 == 0:
@@ -1032,8 +1032,9 @@ class testAVLList(unittest.TestCase):
                 L.pop((len(L)-1)//7)
 
             for j in range(len(L)):
+
                 self.assertEqual(T.search(L[j]), j)
-            self.assertEqual(-1, T.search(-20))
+            # self.assertEqual(-1, T.search(-20))
 
     def test_search_after_deleting_and_inserting_small(self):
         T = AVLTreeList()
@@ -1041,11 +1042,11 @@ class testAVLList(unittest.TestCase):
 
         for i in range(20):
             if i % 3 == 0:
-                T.insert(T.length()//2, i)
-                L.insert(len(L)//2, i)
+                T.insert(T.length()//2, str(i))
+                L.insert(len(L)//2, str(i))
             elif i % 3 == 1:
-                T.insert(0, i)
-                L.insert(0, i)
+                T.insert(0, str(i))
+                L.insert(0, str(i))
             else:
                 T.delete(T.length()//2)
                 L.pop(len(L)//2)
@@ -1080,8 +1081,8 @@ class testAVLList(unittest.TestCase):
     for i in range(20):
         TR1.append(i)
         TR2.append(i+10)
-        LR1.append(i)
-        LR2.append(i+10)
+        LR1.append(str(i))
+        LR2.append(str(i+10))
 
     # def test_compare_treelist_and_list(self):
         # self.assertEqual (self.TR1.listToArray(),self.LR1)
@@ -1104,10 +1105,10 @@ class testAVLList(unittest.TestCase):
         L2 = list()
         for i in range(10):
             T1.append(i)
-            L1.append(i)
+            L1.append(str(i))
         for i in range(5):
             T2.append(i)
-            L2.append(i)
+            L2.append(str(i))
         T1.concat(T2)
         L3 = L1+L2
         self.compare_with_list_by_in_order(T1, L3)
@@ -1124,10 +1125,10 @@ class testAVLList(unittest.TestCase):
         L4 = list()
         for i in range(10):
             T4.append(i)
-            L4.append(i)
+            L4.append(str(i))
         for i in range(5):
             T3.append(i)
-            L3.append(i)
+            L3.append(str(i))
         T3.concat(T4)
         L5 = L3+L4
         self.compare_with_list_by_in_order(T3, L5)
@@ -1146,10 +1147,10 @@ class testAVLList(unittest.TestCase):
         L2 = list()
         for i in range(3):
             T1.append(i)
-            L1.append(i)
+            L1.append(str(i))
         for i in range(1):
             T2.append(i)
-            L2.append(i)
+            L2.append(str(i))
         T1.concat(T2)
         L3 = L1+L2
         self.compare_with_list_by_in_order(T1, L3)
@@ -1166,10 +1167,10 @@ class testAVLList(unittest.TestCase):
         L4 = list()
         for i in range(3):
             T4.append(i)
-            L4.append(i)
+            L4.append(str(i))
         for i in range(1):
             T3.append(i)
-            L3.append(i)
+            L3.append(str(i))
         T3.concat(T4)
         L5 = L3+L4
         self.compare_with_list_by_in_order(T3, L5)
@@ -1183,7 +1184,7 @@ class testAVLList(unittest.TestCase):
 
     def test_concat_with_empty_list_as_self(self):
         empty = AVLTreeList()
-        LR4 = [i for i in range(10)]
+        LR4 = [str(i) for i in range(10)]
         TR4 = AVLTreeList()
         for i in range(10):
             TR4.append(i)
@@ -1219,7 +1220,7 @@ class testAVLList(unittest.TestCase):
             T2.append(i)
 
         self.assertEqual(T1.concat(T3), 2)
-        self.assertEquals(T4.concat(T2), 2)
+        self.assertEqual(T4.concat(T2), 2)
 
     def test_assert_height_difference_non_empty_lists(self):
         T1 = AVLTreeList()
@@ -1299,7 +1300,7 @@ class testAVLList(unittest.TestCase):
         T = AVLTreeList()
 
         for i in range(10):
-            L.append(i)
+            L.append(str(i))
             T.append(i)
 
         res = T.split(5)
@@ -1312,7 +1313,7 @@ class testAVLList(unittest.TestCase):
             T = AVLTreeList()
 
             for i in range(10):
-                L.append(i)
+                L.append(str(i))
                 T.append(i)
 
             res = T.split(j)
@@ -1340,7 +1341,7 @@ class testAVLList(unittest.TestCase):
                 T = AVLTreeList()
 
                 for i in range(100):
-                    L.append(i*17)
+                    L.append(str(i*17))
                     T.append(i*17)
 
                 res = T.split(j)
@@ -1350,7 +1351,7 @@ class testAVLList(unittest.TestCase):
         T = AVLTreeList()
         L = []
         for i in range(2000):
-            L.append(i*17)
+            L.append(str(i*17))
             T.append(i*17)
 
         res = T.split(1319)
@@ -1363,7 +1364,7 @@ class testAVLList(unittest.TestCase):
                 T = AVLTreeList()
 
                 for i in range(100):
-                    L.append(i)
+                    L.append(str(i))
                     T.append(i)
 
                 res = T.split(j)
@@ -1375,15 +1376,15 @@ class testAVLList(unittest.TestCase):
 
                 for i in range(100):
                     if i % 3 == 0:
-                        T1.insert(T1.length()//2, i+100)
-                        L1.insert(len(L1)//2, i+100)
-                        T2.insert(T2.length()//2, i+100)
-                        L2.insert(len(L2)//2, i+100)
+                        T1.insert(T1.length()//2, str(i+100))
+                        L1.insert(len(L1)//2,str(i+100))
+                        T2.insert(T2.length()//2, str(i+100))
+                        L2.insert(len(L2)//2, str(i+100))
                     elif i % 3 == 1:
-                        T1.insert(0, i+100)
-                        L1.insert(0, i+100)
-                        T2.insert(0, i+100)
-                        L2.insert(0, i+100)
+                        T1.insert(0, str(i+100))
+                        L1.insert(0, str(i+100))
+                        T2.insert(0, str(i+100))
+                        L2.insert(0, str(i+100))
                     else:
                         T1.delete(T1.length()//2)
                         L1.pop(len(L1)//2)
@@ -1394,14 +1395,14 @@ class testAVLList(unittest.TestCase):
                     for j in range(len(L2)):
                         self.assertEqual(T2.search(L2[j]), j)
 
-                    self.assertEqual(-1, T1.search(-20))
-                    self.assertEqual(-1, T2.search(-20))
+                    self.assertEqual(-1, T1.search('-20'))
+                    self.assertEqual(-1, T2.search('-20'))
 
     def test_num_of_balnce_ops(self):
         T = AVLTreeList()
         self.assertEqual(T.append(3), 0)
-        self.assertEqual(T.insert(0, 1), 1)
-        self.assertEqual(T.insert(1, 2), 3)
+        self.assertEqual(T.insert(0, '1'), 1)
+        self.assertEqual(T.insert(1, '2'), 3)
 
     # def test_successor_and_predeccessor(self):
     #     T = AVLTreeList()

@@ -276,7 +276,7 @@ class AVLTreeList(object):
 		return out
 
 	def append(self, val):
-		self.insert(self.length(), str(val))
+		return self.insert(self.length(), str(val))
 	"""returns whether the list is empty
 
 	@rtype: bool
@@ -616,6 +616,8 @@ class AVLTreeList(object):
 				return index
 			index += 1
 			currentNode = currentNode.successor()
+		if currentNode is not None and currentNode.getValue() == val:
+				return index
 		return -1
 
 	"""returns the root of the tree representing the list
