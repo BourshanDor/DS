@@ -24,7 +24,7 @@ class testAVLList(unittest.TestCase):
         twentyTree.append(i)
 
     def in_order(self, tree, node, func):
-        if node != None:
+        if node is not None:
             if node.isRealNode():
                 self.in_order(tree, node.getLeft(), func)
                 func(node, tree)

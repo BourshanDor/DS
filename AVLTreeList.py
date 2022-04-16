@@ -551,7 +551,8 @@ class AVLTreeList(object):
 		leftTree, rightTree = AVLTreeList(), AVLTreeList()
 		# Using lazy evaluation, set left tree root to left child of pivot and detach it from parent
 		pivot.getLeft().isRealNode() and (leftTree.setRoot(pivot.getLeft()) or leftTree.getRoot().setParent(None))
-		# And do the same for right child of pivot
+		# And do the same for right child of pivot.
+		# This behavior is ideal for performance, but must be overridden for experiment #2.
 		pivot.getRight().isRealNode() and (rightTree.setRoot(pivot.getRight()) or rightTree.getRoot().setParent(None))
 		ascendingPointer = pivot
 		leftJoin = []
