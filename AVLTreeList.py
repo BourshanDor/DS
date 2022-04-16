@@ -549,12 +549,10 @@ class AVLTreeList(object):
 	def split(self, i):
 		pivot = self.retrieveByIndex(i)
 		leftTree, rightTree = AVLTreeList(), AVLTreeList()
-		pivot.getLeft().isRealNode() and leftTree.setRoot(pivot.getLeft())
-		# Make sure to detach the new roots from the old parents!
-		leftTree.empty() or leftTree.getRoot().setParent(None)
-		pivot.getRight().isRealNode() and rightTree.setRoot(pivot.getRight())
-		# Detach from old parents
-		rightTree.empty() or rightTree.getRoot().setParent(None)
+		# Using lazy evaluation, set left tree root to left child of pivot and detach it from parent
+		pivot.getLeft().isRealNode() and (leftTree.setRoot(pivot.getLeft()) or leftTree.getRoot().setParent(None))
+		# And do the same for right child of pivot
+		pivot.getRight().isRealNode() and (rightTree.setRoot(pivot.getRight()) or rightTree.getRoot().setParent(None))
 		ascendingPointer = pivot
 		leftJoin = []
 		rightJoin = []
