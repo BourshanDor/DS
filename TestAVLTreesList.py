@@ -193,11 +193,12 @@ class TestAVLTreesList(unittest.TestCase):
 
     #
     def testLotsaSplitCrashes(self):
-        for i in range(10):
+        for i in range(1000):
             print("Iteration:", i + 1)
             tr1 = AVLTreeList()
             tr2 = AVLTreeList()
-            n = 1000 * (2 ** (i))
+        #    n = 1000 * (2 ** (i))
+            n = 5000
             for i in range(n):
                 insertionIndex = random.randrange(0, i) if i > 0 else 0
                 tr1.insert(insertionIndex, str(i))
@@ -207,11 +208,11 @@ class TestAVLTreesList(unittest.TestCase):
             # tr2Left = AVLTreeList()
             # tr2Left.setRoot(leftRoot)
             # leftNode = tr2Left.lastByReference()
-            print("start")
-            tr1.split(random.randrange(0, tr1.length()))
-            tr2.split(tr2.length()//2)
-            print("end")
-            join(tr1, tr2, AVLNode("Q"))
+            print(tr1)
+            print(tr1.split(random.randrange(0, tr1.length()))[0])
+            print(tr2.split(tr2.length()//2)[0])
+            print(tr2)
+        #    join(tr1, tr2, AVLNode("Q"))
 
     # def test_split(self):
     #     vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
