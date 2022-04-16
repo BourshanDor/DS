@@ -309,7 +309,7 @@ class AVLTreeList(object):
 	def insert(self, i, val):
 		rotationCounter = 0
 		insertionNode = AVLNode(val)
-		if self.empty():
+		if self.empty() or isinstance(self.root, AVLVirtualNode):
 			self.root = insertionNode
 			return rotationCounter
 		if i == 0:
@@ -483,7 +483,7 @@ class AVLTreeList(object):
 	@rtype: AVLTreeNode || None
 	"""
 	def firstByReference(self):
-		if self.empty():
+		if self.empty() or isinstance(self.root, AVLVirtualNode):
 			return None
 		next_left = self.root.getLeft()
 		while next_left.isRealNode():
@@ -504,7 +504,7 @@ class AVLTreeList(object):
 	@rtype: AVLTreeNode || None
 	"""
 	def lastByReference(self):
-		if self.empty():
+		if self.empty() or isinstance(self.root, AVLVirtualNode):
 			return None
 		next_right = self.root.getRight()
 		while next_right.isRealNode():
