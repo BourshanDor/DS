@@ -549,12 +549,12 @@ class AVLTreeList(object):
 	def split(self, i, byReference = False):
 		pivot = self.retrieveByIndex(i) if not byReference else i
 		leftTree, rightTree = AVLTreeList(), AVLTreeList()
-		leftTree.setRoot(pivot.getLeft())
+		isinstance(pivot.getLeft(), AVLVirtualNode) or leftTree.setRoot(pivot.getLeft())
 		# Make sure to detach the new roots from the old parents!
 		leftTree.getRoot() and leftTree.getRoot().setParent(None)
 		rightTree.setRoot(pivot.getRight())
 		# Detach from old parents
-		rightTree.getRoot() and rightTree.getRoot().setParent(None)
+		isinstance(pivot.getRight(), AVLVirtualNode) and rightTree.getRoot().setParent(None)
 		ascendingPointer = pivot
 		leftJoin = []
 		rightJoin = []
@@ -878,9 +878,9 @@ def joinTreeList(originalTree, treesToJoin, isLeft):
 		commonParent.setRight(AVLVirtualNode(commonParent))
 		commonParent.setParent(None)
 		if isLeft:
-			j = join(siblingTree, originalTree, commonParent)
+			j = join(siblingTree, originalTree, commonParent) or 0
 		else:
-			j = join(originalTree, siblingTree, commonParent)
+			j = join(originalTree, siblingTree, commonParent) or 0
 		total += j
 		count += 1
 		maximum = max(maximum, j)
