@@ -573,11 +573,11 @@ class AVLTreeList(object):
 
 			ascendingPointer = ascendingPointer.getParent()
 
-		if isinstance(leftTree.root, AVLVirtualNode):
-			leftTree = AVLTreeList()
-
-		if isinstance(rightTree.root, AVLVirtualNode):
-			rightTree = AVLTreeList()
+		# if isinstance(leftTree.root, AVLVirtualNode):
+		# 	leftTree = AVLTreeList()
+		#
+		# if isinstance(rightTree.root, AVLVirtualNode):
+		# 	rightTree = AVLTreeList()
 
 		joinTreeList(leftTree, leftJoin, True)
 		joinTreeList(rightTree, rightJoin, False)
