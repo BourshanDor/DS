@@ -402,18 +402,18 @@ class TestAVLTreesList(unittest.TestCase):
 #
 #
 #
-# def checkBalanceFactor(AVLTr):
-#
-#     def recurtionCheckBalanceFactor(AVLNo):
-#         if AVLNo.isRealNode():
-#             return
-#         recurtionCheckBalanceFactor(AVLNo.getLeft())
-#         if not AVLNo.validBF():
-#             print("Wrong")
-#         recurtionCheckBalanceFactor(AVLNo.getRight())
-#
-#     a = recurtionCheckBalanceFactor(AVLTr.getRoot())
-#     print('Ok')
+def checkBalanceFactor(AVLTr):
+
+    def recurtionCheckBalanceFactor(AVLNo):
+        if AVLNo.isRealNode():
+            return
+        recurtionCheckBalanceFactor(AVLNo.getLeft())
+        if not AVLNo.validBF():
+            print("Wrong")
+        recurtionCheckBalanceFactor(AVLNo.getRight())
+
+    a = recurtionCheckBalanceFactor(AVLTr.getRoot())
+    print('Ok')
 
 
 if __name__ == '__main__':

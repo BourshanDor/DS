@@ -546,8 +546,8 @@ class AVLTreeList(object):
 	right is an AVLTreeList representing the list from index i+1, and val is the value at the i'th index.
 	@see: joinTreeList
 	"""
-	def split(self, i):
-		pivot = self.retrieveByIndex(i)
+	def split(self, i, byReference = False):
+		pivot = self.retrieveByIndex(i) if not byReference else i
 		leftTree, rightTree = AVLTreeList(), AVLTreeList()
 		leftTree.setRoot(pivot.getLeft())
 		# Make sure to detach the new roots from the old parents!
@@ -579,9 +579,14 @@ class AVLTreeList(object):
 		# if isinstance(rightTree.root, AVLVirtualNode):
 		# 	rightTree = AVLTreeList()
 
-		joinTreeList(leftTree, leftJoin, True)
-		joinTreeList(rightTree, rightJoin, False)
-		return [leftTree, pivot.getValue(), rightTree]
+		j1 = joinTreeList(leftTree, leftJoin, True)
+		j2 = joinTreeList(rightTree, rightJoin, False)
+		total = j1[0] + j2[0]
+		count = j1[1] + j2[1]
+		average = total / count
+		maximum = max(j1[2], j2[2])
+		return [average, maximum]
+
 
 	"""concatenates lst to self
 
@@ -781,13 +786,14 @@ def join(leftTree, rightTree, connectingNode):
 	@param leftTree: The left AVLTreeList we wish to join; corresponds to the tree with smaller keys we saw in class.
 	@param rightTree: The right AVLTreeList we wish to join; corresponds to the tree with greater keys we saw in class.
 	@param connectingNode: The node about which we attach the two trees; it is placed "between" them.
-	@rtype: None
+	@rtype: int
 	"""
 	if handleEmptyJoin(leftTree, rightTree, connectingNode):
 		return
 	leftIsTaller = leftTree.root.getHeight() >= rightTree.root.getHeight()
 	shorter = rightTree if leftIsTaller else leftTree
 	taller = leftTree if leftIsTaller else rightTree
+	heightDiff = abs(leftTree.root.getHeight() - rightTree.root.getHeight())
 	node = taller.root
 	while node.getHeight() > shorter.root.getHeight():
 		node = node.getRight() if leftIsTaller else node.getLeft()
@@ -814,6 +820,7 @@ def join(leftTree, rightTree, connectingNode):
 	taller.balanceTree(connectingNode)
 	# set what was the shorter tree to point to the joined tree to avoid bugs
 	shorter.setRoot(taller.root)
+	return heightDiff
 
 
 def handleEmptyJoin(leftTree, rightTree, connectingNode):
@@ -854,10 +861,14 @@ def joinTreeList(originalTree, treesToJoin, isLeft):
 	@param originalTree: The tree from which we begin joining; the lowest one.
 	@param treesToJoin: An array of trees to join to originalTree.
 	@param isLeft: Boolean parameter to determine join direction
-	@rtype: None
+	@rtype: list
 	@see: split
 	"""
 	# Every tree in the list is represented by a sublist of length 2.
+	total = 0
+	count = 0
+	maximum = 0
+	j = 0
 	for treeSublist in treesToJoin:
 		siblingTree, commonParent = treeSublist[0], treeSublist[1]
 		if siblingTree.getRoot() is not None:
@@ -867,6 +878,10 @@ def joinTreeList(originalTree, treesToJoin, isLeft):
 		commonParent.setRight(AVLVirtualNode(commonParent))
 		commonParent.setParent(None)
 		if isLeft:
-			join(siblingTree, originalTree, commonParent)
+			j = join(siblingTree, originalTree, commonParent)
 		else:
-			join(originalTree, siblingTree, commonParent)
+			j = join(originalTree, siblingTree, commonParent)
+		total += j
+		count += 1
+		maximum = max(maximum, j)
+	return [total, count, maximum]
