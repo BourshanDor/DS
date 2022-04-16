@@ -208,10 +208,11 @@ class TestAVLTreesList(unittest.TestCase):
             # tr2Left = AVLTreeList()
             # tr2Left.setRoot(leftRoot)
             # leftNode = tr2Left.lastByReference()
-            print(tr1)
-            print(tr1.split(random.randrange(0, tr1.length()))[0])
-            print(tr2.split(tr2.length()//2)[0])
-            print(tr2)
+            #print(tr1)
+            l = tr1.split(random.randrange(0, tr1.length()))
+            self.assertEqual(l[0].length() + l[2].length(), n - 1)
+            k = tr2.split(tr2.length()//2)
+            self.assertEqual(k[0].length() + k[2].length(), n - 1)
         #    join(tr1, tr2, AVLNode("Q"))
 
     # def test_split(self):
