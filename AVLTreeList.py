@@ -549,10 +549,10 @@ class AVLTreeList(object):
 	def split(self, i):
 		pivot = self.retrieveByIndex(i)
 		leftTree, rightTree = AVLTreeList(), AVLTreeList()
-		leftTree.setRoot(pivot.getLeft())
+		isinstance(pivot.getLeft(), AVLVirtualNode) or leftTree.setRoot(pivot.getLeft())
 		# Make sure to detach the new roots from the old parents!
 		leftTree.getRoot() and leftTree.getRoot().setParent(None)
-		rightTree.setRoot(pivot.getRight())
+		isinstance(pivot.getRight(), AVLVirtualNode) or rightTree.setRoot(pivot.getRight())
 		# Detach from old parents
 		rightTree.getRoot() and rightTree.getRoot().setParent(None)
 		ascendingPointer = pivot
@@ -572,12 +572,6 @@ class AVLTreeList(object):
 				rightJoin.append([siblingTree, par])
 
 			ascendingPointer = ascendingPointer.getParent()
-
-		if isinstance(leftTree.root, AVLVirtualNode):
-			leftTree = AVLTreeList()
-
-		if isinstance(rightTree.root, AVLVirtualNode):
-			rightTree = AVLTreeList()
 
 		joinTreeList(leftTree, leftJoin, True)
 		joinTreeList(rightTree, rightJoin, False)
