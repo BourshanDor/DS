@@ -13,7 +13,7 @@ def insertions(tr : AVLTreeList, n : int, doRotate=True, mode=RANDOM):
         if mode == RANDOM:
             insertionIndex = (random.randrange(0, i) if i > 0 else 0)
         elif mode == ORDERED:
-            insertionIndex = i
+            insertionIndex = 0
         balanceOps, depth = tr.insert(insertionIndex, str(i), doRotate)
         total += balanceOps
         depthTotal += depth
@@ -28,13 +28,15 @@ def specialInsertions(tr : AVLTreeList, n: int, doRotate=True, mode=SPECIAL):
     amountInStep = 1
     numbersSoFar = 0
 
-    while numbersSoFar < n - 1:
+    while numbersSoFar < n :
         for num in range(amountInStep):
+            if numbersSoFar >= n:
+                break
             numbersSoFar += 1
             insertionIndex = num * 2
            # print(insertionIndex)
             balanceOps, depth = tr.insert(insertionIndex, str(numbersSoFar), doRotate)
-           # print(tr)
+            #print(tr)
             total += balanceOps
             depthTotal += depth
         amountInStep *= 2
@@ -158,4 +160,4 @@ def q3c():
         print("\n\n")
 
 
-q3c()
+q3b()

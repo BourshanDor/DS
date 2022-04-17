@@ -314,7 +314,7 @@ class AVLTreeList(object):
 			self.root = insertionNode
 			return [rotationCounter, depthCounter]
 		if i == 0:
-			first = self.firstByReference()
+			first, depthCounter = self.firstByReference()
 			insertionNode.setParent(first)
 			first.setLeft(insertionNode)
 		else:
@@ -488,11 +488,13 @@ class AVLTreeList(object):
 	"""
 	def firstByReference(self):
 		if self.empty() or isinstance(self.root, AVLVirtualNode):
-			return None
+			return [None, 0]
+		depthCount = 1
 		next_left = self.root.getLeft()
 		while next_left.isRealNode():
+			depthCount += 1
 			next_left = next_left.getLeft()
-		return next_left.getParent()
+		return [next_left.getParent(), depthCount]
 
 	"""returns the value of the last item in the list
 	Runtime: O(log(n))
