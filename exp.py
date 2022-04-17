@@ -1,12 +1,46 @@
 import random
 from AVLTreeList import *
 
-def insertions(tr : AVLTreeList, n : int):
+RANDOM = 0
+ORDERED = 1
+SPECIAL = 2
+
+
+def insertions(tr : AVLTreeList, n : int, doRotate=True, mode=RANDOM):
     total = 0
+    depthTotal = 0
     for i in range(n):
-        insertionIndex = random.randrange(0, i) if i > 0 else 0
-        total += tr.insert(insertionIndex, str(i))
-    return total
+        if mode == RANDOM:
+            insertionIndex = (random.randrange(0, i) if i > 0 else 0)
+        elif mode == ORDERED:
+            insertionIndex = i
+        balanceOps, depth = tr.insert(insertionIndex, str(i), doRotate)
+        total += balanceOps
+        depthTotal += depth
+    balanceAvg = total / n
+    depthAvg = depthTotal / n
+    return [balanceAvg, depthAvg]
+
+
+def specialInsertions(tr : AVLTreeList, n: int, doRotate=True, mode=SPECIAL):
+    total = 0
+    depthTotal = 0
+    amountInStep = 1
+    numbersSoFar = 0
+
+    while numbersSoFar < n - 1:
+        for num in range(amountInStep):
+            numbersSoFar += 1
+            insertionIndex = num * 2
+           # print(insertionIndex)
+            balanceOps, depth = tr.insert(insertionIndex, str(numbersSoFar), doRotate)
+           # print(tr)
+            total += balanceOps
+            depthTotal += depth
+        amountInStep *= 2
+    balanceAvg = total / n
+    depthAvg = depthTotal / n
+    return [balanceAvg, depthAvg]
 
 def deletions(tr: AVLTreeList, n: int):
     total = 0
@@ -52,11 +86,76 @@ def q1c():
         print("Iteration:", i+1, "balance count:", insertionsAndDeletions(tr, n))
 
 
-def q2a():
-    print("TESTING ")
+question3_n = 1000
 
-q1a()
-print("\n\n\n")
-q1b()
-print("\n\n\n")
-q1c()
+
+def q3a():
+    print("TESTING UNBALANCED, ORDERED INSERTIONS")
+    for i in range(10):
+        n = question3_n * (i+1)
+        balanced = AVLTreeList()
+        unbalanced = AVLTreeList()
+        balancedOpsAvg, balancedDepthAvg = insertions(balanced, n, True, ORDERED)
+        unbalancedOpsAvg, unbalancedDepthAvg = insertions(unbalanced, n, False, ORDERED)
+        print("Iteration:", i + 1)
+        print("Average OPS in BALANCED tree:", balancedOpsAvg)
+        print("Average DEPTH in BALANCED tree:", balancedDepthAvg)
+        print("\n")
+        print("Average OPS in UNBALANCED tree:", unbalancedOpsAvg)
+        print("Average DEPTH in UNBALANCED tree:", unbalancedDepthAvg)
+        print("\n\n")
+
+def q3b():
+    print("TESTING UNBALANCED, 'PERFECT SEQUENCE' INSERTIONS")
+    print("Ops: balanced, unbalanced")
+    print("Depths: balanced, unbalanced")
+    for i in range(10):
+        n = question3_n * (i + 1)
+        balanced = AVLTreeList()
+        unbalanced = AVLTreeList()
+        balancedOpsAvg, balancedDepthAvg = specialInsertions(balanced, n, True, SPECIAL)
+        unbalancedOpsAvg, unbalancedDepthAvg = specialInsertions(unbalanced, n, False, SPECIAL)
+        print("Iteration:", i + 1)
+        print(balancedOpsAvg, unbalancedOpsAvg)
+        print("\n")
+        print(balancedDepthAvg, unbalancedDepthAvg)
+        print("\n\n")
+
+
+def newRandomInsertions(balanced : AVLTreeList, unbalanced : AVLTreeList, n : int):
+    balancedTotal = 0
+    balancedDepthTotal = 0
+    unbalancedTotal = 0
+    unbalancedDepthTotal = 0
+    for i in range(n):
+        insertionIndex = (random.randrange(0, i) if i > 0 else 0)
+        balTotInc, balDepInc = balanced.insert(insertionIndex, str(i), True)
+        unbalTotInc, unbalDepInc = unbalanced.insert(insertionIndex, str(i), False)
+        balancedTotal += balTotInc
+        balancedDepthTotal += balDepInc
+        unbalancedTotal += unbalTotInc
+        unbalancedDepthTotal += unbalDepInc
+    ret = [(balancedTotal / n), (unbalancedTotal / n), (balancedDepthTotal / n), (unbalancedDepthTotal / n)]
+    return ret
+
+def q3c():
+    print("TESTING UNBALANCED, RANDOM INSERTIONS")
+    balancedOps = []
+    unbalancedOps = []
+    balancedHeight = []
+    unbalancedHeight = []
+    for i in range(10):
+        n = question3_n * (i + 1)
+        balanced = AVLTreeList()
+        unbalanced = AVLTreeList()
+        retVal = newRandomInsertions(balanced, unbalanced, n)
+        balancedOpsAvg, unbalancedOpsAvg = retVal[0], retVal[1]
+        balancedDepthAvg, unbalancedDepthAvg = retVal[2], retVal[3]
+        print("Iteration:", i + 1)
+        print(unbalancedOpsAvg, balancedOpsAvg)
+        print("\n")
+        print(unbalancedDepthAvg, balancedDepthAvg)
+        print("\n\n")
+
+
+q3c()

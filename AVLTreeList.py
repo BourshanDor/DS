@@ -294,7 +294,7 @@ class AVLTreeList(object):
 	@returns: the the value of the i'th item in the list
 	"""
 	def retrieve(self, i):
-		return self.retrieveByIndex(i).getValue()
+		return self.retrieveByIndex(i)[0].getValue()
 
 	"""inserts val at position i in the list
 
@@ -303,25 +303,29 @@ class AVLTreeList(object):
 	@param i: The intended index in the list to which we insert val
 	@type val: str
 	@param val: the value we inserts
-	@rtype: int
+	@rtype: list
 	@returns: the number of rebalancing operations due to AVL rebalancing
 	"""
-	def insert(self, i, val):
+	def insert(self, i, val, doRotate=True):
 		rotationCounter = 0
+		depthCounter = 0
 		insertionNode = AVLNode(val)
 		if self.empty() or isinstance(self.root, AVLVirtualNode):
 			self.root = insertionNode
-			return rotationCounter
+			return [rotationCounter, depthCounter]
 		if i == 0:
 			first = self.firstByReference()
 			insertionNode.setParent(first)
 			first.setLeft(insertionNode)
 		else:
 			# Fetch the node at index i. Take one step right, then go all the way left.
-			descendingPointer = self.retrieveByIndex(i-1)
+			descendingPointer, addedDepth = self.retrieveByIndex(i-1)
+			depthCounter += addedDepth
 			descendingPointer = descendingPointer.getRight()
+			depthCounter += 1
 			while descendingPointer.isRealNode():
 				descendingPointer = descendingPointer.getLeft()
+				depthCounter += 1
 			# node now points to the virtual node which we want to replace with our insertionNode.
 			# All that's left to do is set its parent and place it to the proper side of its parent.
 			where = descendingPointer.checkParentSide()
@@ -329,9 +333,9 @@ class AVLTreeList(object):
 			self.assignParentSide(insertionNode, where, allowRoot=False)
 
 		# After inserting our node, we traverse the branch from it to up the root, balancing and recalculating fields.
-		return self.balanceTree(insertionNode, rotationCounter)
+		return [self.balanceTree(insertionNode, rotationCounter, doRotate), depthCounter]
 
-	def balanceTree(self, ascendingPointer, balanceCount=0):
+	def balanceTree(self, ascendingPointer, balanceCount=0, doRotate=True):
 		"""
 		Traverses the branch from node to root, rotating and balancing as required.
 		Runtime: O(log(n)).
@@ -342,7 +346,7 @@ class AVLTreeList(object):
 		"""
 		while ascendingPointer is not None and ascendingPointer.getParent() is not ascendingPointer:
 			heightDiff = ascendingPointer.recalculate()
-			rotationCount = self.balanceNode(ascendingPointer)
+			rotationCount = self.balanceNode(ascendingPointer, doRotate)
 			increment = rotationCount if rotationCount > 0 else heightDiff
 			balanceCount += increment
 			ascendingPointer = ascendingPointer.getParent()
@@ -644,6 +648,7 @@ class AVLTreeList(object):
 
 		explore = self.root
 		counter = explore.getLeft().getSize() + 1
+		depthCounter = 0
 
 		while j != counter:
 			if j < counter:
@@ -653,10 +658,10 @@ class AVLTreeList(object):
 				j = j - counter
 				explore = explore.getRight()
 				counter = explore.getLeft().getSize() + 1
+			depthCounter += 1
+		return [explore, depthCounter]
 
-		return explore
-
-	def balanceNode(self, node):
+	def balanceNode(self, node, doRotate=True):
 		"""
 		Rotates node to restore legal balance factor.
 		Implicitly checks if rotation is required; if not, returns 0.
@@ -667,7 +672,7 @@ class AVLTreeList(object):
 		"""
 		rotationsPerformed = 0
 		selfBF = node.getBF()
-		if abs(selfBF) <= 1:
+		if not doRotate or abs(selfBF) <= 1:
 			return rotationsPerformed
 		rightBF, leftBF = node.getRight().getBF(), node.getLeft().getBF()
 		if selfBF > 1:
