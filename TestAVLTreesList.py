@@ -5,168 +5,168 @@ import random
 
 class TestAVLTreesList(unittest.TestCase):
 
-    def test_empty(self):
-
-        list = AVLTreeList()
-        self.assertEqual(list.empty(), True)
-        list.insert(0,'a')
-        self.assertEqual(list.empty(), False)
-        list.delete(0)
-        self.assertEqual(list.empty(), True)
-
-    def test_retrieve(self):
-
-        list = AVLTreeList()
-        lst = []
-
-        for i in range(100):
-            lst.append(str(random.randint(0,1000000)))
-
-        for i in range(100):
-            list.insert(i, lst[i])
-
-        for i in range(100):
-            self.assertEqual(list.retrieve(i), lst[i])
-            self.assertEqual(list.retrieve(i) is None, False)
-            self.assertEqual(list.retrieve(i) == '-1', False)
-        TheTragedyofCoriolanus = []
-        with open('The Tragedy of Coriolanus.txt', 'r') as f:
-            for line in f:
-                for word in line.split():
-                    TheTragedyofCoriolanus.append(word)
-
-        list2 = AVLTreeList()
-        i = 0
-        for st in TheTragedyofCoriolanus:
-            list2.insert(i, st)
-            i += 1
-
-        i = 0
-        for st in TheTragedyofCoriolanus:
-            self.assertEqual(list2.retrieve(i), st)
-            i += 1
-
-
-    def test_insert(self):
-        list = AVLTreeList()
-
-        self.assertEqual(list.insert(list.length(), '3'), 0)
-        self.assertEqual(list.insert(list.length(), '1'), 1)
-        self.assertEqual(list.insert(1, '2'),3)
-
-        list = AVLTreeList()
-        vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', 'T', '9', '10', '11', '12', '13', '14', '15', '16', '17',
-                '18', '19', '20', '21', '22']
-
-        for i in range(len(vals)):
-            list.insert(i, vals[i])
-
-        self.assertEqual(list.insert(10, '***'), 5)
-        self.assertEqual(list.insert(11, 'Amir'), 3)
-        self.assertEqual(list.insert(9, 'Natan'), 1)
-        self.assertEqual(list.insert(12, 'Omri'), 5)
-        self.assertEqual(list.insert(26, 'Dani'), 0)
-        self.assertEqual(list.insert(25, 'Noam'), 1)
-
-
-    def test_delete(self):
-
-        list = AVLTreeList()
-
-        vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9' , '10']
-
-        for i in range(len(vals)):
-            list.insert(i, vals[i])
-
-        self.assertEqual(list.delete(0), 0)
-        self.assertEqual(list.delete(1), 2)
-        self.assertEqual(list.delete(1), 0)
-        self.assertEqual(list.delete(0),2)
-        self.assertEqual(list.delete(2),0)
-        self.assertEqual(list.delete(3),0)
-        self.assertEqual(list.delete(1),0)
-        self.assertEqual(list.delete(0),1)
-        self.assertEqual(list.delete(0),0)
-        self.assertEqual(list.delete(0),0)
-        self.assertEqual(list.delete(0), 0)
-
-        for i in range(len(vals)):
-            list.insert(i, vals[i])
-
-
-        self.assertEqual(list.delete(3), 0)
-
-
-    def test_first(self):
-
-        list = AVLTreeList()
-        vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9' , '10']
-
-        for i in range(len(vals)):
-            list.insert(i, vals[i])
-
-        for i in range(len(vals)):
-            self.assertEqual(list.first(), vals[i])
-            list.delete(0)
-
-
-    def test_last(self):
-
-        list = AVLTreeList()
-        vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-
-        for i in range(len(vals)):
-            list.insert(i, vals[i])
-
-        for i in range(len(vals)):
-            self.assertEqual(list.last(), vals[len(vals) - (i + 1)])
-            list.delete(list.length()-1)
-
-    def test_listToArray(self):
-
-        TheTragedyofCoriolanus = []
-        with open('The Tragedy of Coriolanus.txt', 'r') as f:
-            for line in f:
-                for word in line.split():
-                    TheTragedyofCoriolanus.append(word)
-
-        list2 = AVLTreeList()
-        i = 0
-        for st in TheTragedyofCoriolanus:
-            list2.insert(i, st)
-            i += 1
-
-        self.assertListEqual(list2.listToArray(),TheTragedyofCoriolanus )
-
-        list = AVLTreeList()
-        lst = []
-
-        for i in range(100):
-            val = str(random.randint(0, 1000000))
-            j = 0
-            if len(lst) != 0:
-                j = random.randint(0,len(lst) - 1)
-            lst.insert(j, val)
-            list.insert(j, val)
-
-        self.assertListEqual(list.listToArray(), lst)
-
-    def test_length(self):
-
-        list = AVLTreeList()
-
-        for i in range(100):
-            val = str(random.randint(0, 1000000))
-            j = 0
-            if i != 0:
-                j = random.randint(0, i)
-            list.insert(j, val)
-        for i in range(100):
-            self.assertEqual(list.length(),100 - i )
-            j = 0
-            if 100 - i != 0 :
-                j = random.randint(0, 100 - (i+1))
-            list.delete(j)
+    # def test_empty(self):
+    #
+    #     list = AVLTreeList()
+    #     self.assertEqual(list.empty(), True)
+    #     list.insert(0,'a')
+    #     self.assertEqual(list.empty(), False)
+    #     list.delete(0)
+    #     self.assertEqual(list.empty(), True)
+    #
+    # def test_retrieve(self):
+    #
+    #     list = AVLTreeList()
+    #     lst = []
+    #
+    #     for i in range(100):
+    #         lst.append(str(random.randint(0,1000000)))
+    #
+    #     for i in range(100):
+    #         list.insert(i, lst[i])
+    #
+    #     for i in range(100):
+    #         self.assertEqual(list.retrieve(i), lst[i])
+    #         self.assertEqual(list.retrieve(i) is None, False)
+    #         self.assertEqual(list.retrieve(i) == '-1', False)
+    #     TheTragedyofCoriolanus = []
+    #     with open('The Tragedy of Coriolanus.txt', 'r') as f:
+    #         for line in f:
+    #             for word in line.split():
+    #                 TheTragedyofCoriolanus.append(word)
+    #
+    #     list2 = AVLTreeList()
+    #     i = 0
+    #     for st in TheTragedyofCoriolanus:
+    #         list2.insert(i, st)
+    #         i += 1
+    #
+    #     i = 0
+    #     for st in TheTragedyofCoriolanus:
+    #         self.assertEqual(list2.retrieve(i), st)
+    #         i += 1
+    #
+    #
+    # def test_insert(self):
+    #     list = AVLTreeList()
+    #
+    #     self.assertEqual(list.insert(list.length(), '3'), 0)
+    #     self.assertEqual(list.insert(list.length(), '1'), 1)
+    #     self.assertEqual(list.insert(1, '2'),3)
+    #
+    #     list = AVLTreeList()
+    #     vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', 'T', '9', '10', '11', '12', '13', '14', '15', '16', '17',
+    #             '18', '19', '20', '21', '22']
+    #
+    #     for i in range(len(vals)):
+    #         list.insert(i, vals[i])
+    #
+    #     self.assertEqual(list.insert(10, '***'), 5)
+    #     self.assertEqual(list.insert(11, 'Amir'), 3)
+    #     self.assertEqual(list.insert(9, 'Natan'), 1)
+    #     self.assertEqual(list.insert(12, 'Omri'), 5)
+    #     self.assertEqual(list.insert(26, 'Dani'), 0)
+    #     self.assertEqual(list.insert(25, 'Noam'), 1)
+    #
+    #
+    # def test_delete(self):
+    #
+    #     list = AVLTreeList()
+    #
+    #     vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9' , '10']
+    #
+    #     for i in range(len(vals)):
+    #         list.insert(i, vals[i])
+    #
+    #     self.assertEqual(list.delete(0), 0)
+    #     self.assertEqual(list.delete(1), 2)
+    #     self.assertEqual(list.delete(1), 0)
+    #     self.assertEqual(list.delete(0),2)
+    #     self.assertEqual(list.delete(2),0)
+    #     self.assertEqual(list.delete(3),0)
+    #     self.assertEqual(list.delete(1),0)
+    #     self.assertEqual(list.delete(0),1)
+    #     self.assertEqual(list.delete(0),0)
+    #     self.assertEqual(list.delete(0),0)
+    #     self.assertEqual(list.delete(0), 0)
+    #
+    #     for i in range(len(vals)):
+    #         list.insert(i, vals[i])
+    #
+    #
+    #     self.assertEqual(list.delete(3), 0)
+    #
+    #
+    # def test_first(self):
+    #
+    #     list = AVLTreeList()
+    #     vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9' , '10']
+    #
+    #     for i in range(len(vals)):
+    #         list.insert(i, vals[i])
+    #
+    #     for i in range(len(vals)):
+    #         self.assertEqual(list.first(), vals[i])
+    #         list.delete(0)
+    #
+    #
+    # def test_last(self):
+    #
+    #     list = AVLTreeList()
+    #     vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+    #
+    #     for i in range(len(vals)):
+    #         list.insert(i, vals[i])
+    #
+    #     for i in range(len(vals)):
+    #         self.assertEqual(list.last(), vals[len(vals) - (i + 1)])
+    #         list.delete(list.length()-1)
+    #
+    # def test_listToArray(self):
+    #
+    #     TheTragedyofCoriolanus = []
+    #     with open('The Tragedy of Coriolanus.txt', 'r') as f:
+    #         for line in f:
+    #             for word in line.split():
+    #                 TheTragedyofCoriolanus.append(word)
+    #
+    #     list2 = AVLTreeList()
+    #     i = 0
+    #     for st in TheTragedyofCoriolanus:
+    #         list2.insert(i, st)
+    #         i += 1
+    #
+    #     self.assertListEqual(list2.listToArray(),TheTragedyofCoriolanus )
+    #
+    #     list = AVLTreeList()
+    #     lst = []
+    #
+    #     for i in range(100):
+    #         val = str(random.randint(0, 1000000))
+    #         j = 0
+    #         if len(lst) != 0:
+    #             j = random.randint(0,len(lst) - 1)
+    #         lst.insert(j, val)
+    #         list.insert(j, val)
+    #
+    #     self.assertListEqual(list.listToArray(), lst)
+    #
+    # def test_length(self):
+    #
+    #     list = AVLTreeList()
+    #
+    #     for i in range(100):
+    #         val = str(random.randint(0, 1000000))
+    #         j = 0
+    #         if i != 0:
+    #             j = random.randint(0, i)
+    #         list.insert(j, val)
+    #     for i in range(100):
+    #         self.assertEqual(list.length(),100 - i )
+    #         j = 0
+    #         if 100 - i != 0 :
+    #             j = random.randint(0, 100 - (i+1))
+    #         list.delete(j)
 
     #
     # def testSplitCrashes(self):
@@ -214,30 +214,30 @@ class TestAVLTreesList(unittest.TestCase):
     #         k = tr2.split(tr2.length()//2)
     #         self.assertEqual(k[0].length() + k[2].length(), n - 1)
     #         join(tr1, tr2, AVLNode("Q"))
-
-    def test_split(self):
-        vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-        list = AVLTreeList()
-
-        for i in range(len(vals)):
-            list.insert(i, vals[i])
-        lst = list.split(0)
-        self.assertListEqual(lst[0].listToArray(), [])
-        self.assertEqual(lst[1], '0')
-        self.assertEqual(lst[2].listToArray(), ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'])
-
-        tallerTree = AVLTreeList()
-        tallerTree.insert(0, '0')
-        tallerTree.insert(0, '1')
-        tallerTree.insert(0, '2')
-        tallerTree.insert(0, '21')
-
-        # print(tallerTree)
-        smallerTree = AVLTreeList()
-        smallerTree.insert(0, '3')
-        a = AVLNode('3')
-        join(smallerTree, tallerTree, a)
-        # print(smallerTree)
+    #
+    # def test_split(self):
+    #     vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+    #     list = AVLTreeList()
+    #
+    #     for i in range(len(vals)):
+    #         list.insert(i, vals[i])
+    #     lst = list.split(0)
+    #     self.assertListEqual(lst[0].listToArray(), [])
+    #     self.assertEqual(lst[1], '0')
+    #     self.assertEqual(lst[2].listToArray(), ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'])
+    #
+    #     tallerTree = AVLTreeList()
+    #     tallerTree.insert(0, '0')
+    #     tallerTree.insert(0, '1')
+    #     tallerTree.insert(0, '2')
+    #     tallerTree.insert(0, '21')
+    #
+    #     # print(tallerTree)
+    #     smallerTree = AVLTreeList()
+    #     smallerTree.insert(0, '3')
+    #     a = AVLNode('3')
+    #     join(smallerTree, tallerTree, a)
+    #     # print(smallerTree)
 
     def test_concat(self):
         # T1 = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']
@@ -254,21 +254,16 @@ class TestAVLTreesList(unittest.TestCase):
         for i in range(len(T1)):
             tr1.insert(i, T1[i])
 
-        # print(tr1)
-        # print(tr2)
-        # print(tr1.concat(tr2))
-        # print(tr1)
-        # print(tr1.listToArray())
+        a = tr1.concat(tr2)
+        self.assertListEqual(tr1.listToArray(), T1+T2)
+        self.assertEqual(a, 1)
 
-
-
-
-    def testSearch(self):
-        vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', 'T', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18',
-                '19', '20', '21', '22']
-        tr = AVLTreeList()
-        for i in range(len(vals)):
-            tr.insert(i, vals[i])
+    # def testSearch(self):
+    #     vals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', 'T', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18',
+    #             '19', '20', '21', '22']
+    #     tr = AVLTreeList()
+    #     for i in range(len(vals)):
+    #         tr.insert(i, vals[i])
         # print(tr.search('T'))
 #
 #
