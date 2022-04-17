@@ -316,6 +316,8 @@ class AVLTreeList(object):
 			self.lastNode = insertionNode
 			self.firstNode = insertionNode
 			return rotationCounter
+		if i == self.length():
+			self.lastNode = insertionNode
 		if i == 0:
 			first = self.firstByReference()
 			insertionNode.setParent(first)
@@ -332,8 +334,7 @@ class AVLTreeList(object):
 			where = descendingPointer.checkParentSide()
 			insertionNode.setParent(descendingPointer.getParent())
 			self.assignParentSide(insertionNode, where, allowRoot=False)
-		if i == self.length():
-			self.lastNode = insertionNode
+
 
 		# After inserting our node, we traverse the branch from it to up the root, balancing and recalculating fields.
 		return self.balanceTree(insertionNode, rotationCounter)
@@ -560,97 +561,6 @@ class AVLTreeList(object):
 	def length(self):
 		return 0 if self.empty() else self.root.getSize()
 
-	"""splits the list at the i'th index
-	Runtime: O(log(n)), as we saw in class.
-	@type i: int
-	@pre: 0 <= i < self.length()
-	@param i: The intended index in the list according to whom we split
-	@rtype: list
-	@returns: a list [left, val, right], where left is an AVLTreeList representing the list until index i-1,
-	right is an AVLTreeList representing the list from index i+1, and val is the value at the i'th index.
-	@see: joinTreeList
-	"""
-	def split(self, i):
-		pivot = self.retrieveByIndex(i)
-		leftTree, rightTree = AVLTreeList(), AVLTreeList()
-		# Using lazy evaluation, set left tree root to left child of pivot and detach it from parent
-		pivot.getLeft().isRealNode() and (leftTree.setRoot(pivot.getLeft()) or leftTree.getRoot().setParent(None))
-		# And do the same for right child of pivot.
-		# This behavior is ideal for performance, but must be overridden for experiment #2.
-		pivot.getRight().isRealNode() and (rightTree.setRoot(pivot.getRight()) or rightTree.getRoot().setParent(None))
-		ascendingPointer = pivot
-		leftJoin = []
-		rightJoin = []
-		while ascendingPointer is not self.root:
-			parentSide = ascendingPointer.checkParentSide()
-			par = ascendingPointer.getParent()
-			siblingRoot = par.getLeft() if parentSide == 1 else par.getRight()
-			siblingTree = AVLTreeList()
-			siblingTree.setRoot(siblingRoot)
-			# Detach from old parents
-			siblingTree.getRoot() and siblingTree.getRoot().setParent(None)
-			if parentSide == 1:
-				leftJoin.append([siblingTree, par])
-			else:
-				rightJoin.append([siblingTree, par])
-
-			ascendingPointer = ascendingPointer.getParent()
-
-		joinTreeList(leftTree, leftJoin, True)
-		joinTreeList(rightTree, rightJoin, False)
-
-		if leftTree.empty():
-			leftTree.firstNode = None
-			leftTree.lastNode = None
-		else:
-			leftTree.firstNode = leftTree.retrieveByIndex(0)
-			leftTree.lastNode = leftTree.retrieveByIndex(leftTree.length() - 1)
-		if rightTree.empty():
-			rightTree.firstNode = None
-			rightTree.lastNode = None
-		else:
-			rightTree.firstNode = rightTree.retrieveByIndex(0)
-			rightTree.lastNode = rightTree.retrieveByIndex(rightTree.length() - 1)
-
-		return [leftTree, pivot.getValue(), rightTree]
-
-	"""concatenates lst to self
-
-	@type lst: AVLTreeList
-	@param lst: a list to be concatenated after self
-	@rtype: int
-	@returns: the absolute value of the difference between the height of the AVL trees joined
-	@post: lst is mutated and should not be reused!
-	"""
-	def concat(self, lst):
-
-
-		EMPTY_TREE_HEIGHT = -1
-		selfHeight = self.root.getHeight() if not self.empty() else EMPTY_TREE_HEIGHT
-		lstHeight = lst.root.getHeight() if not lst.empty() else EMPTY_TREE_HEIGHT
-		heightDiff = abs(selfHeight - lstHeight)
-		if self.empty():
-			self.setRoot(lst.root)
-			self.firstNode = lst.firstNode
-			self.lastNode = lst.lastNode
-			return heightDiff
-		if lst.empty():
-			return heightDiff
-		x = self.lastByReference()
-		self.delete(self.length()-1)
-
-
-		join(self, lst, x)
-
-		if self.empty():
-			self.lastNode = lst.lastNode
-
-			self.firstNode = lst.firstNode
-		elif not lst.empty():
-			self.lastNode = lst.lastNode
-
-		return heightDiff
-
 	"""searches for a *value* in the list
 
 	@type val: str
@@ -658,17 +568,20 @@ class AVLTreeList(object):
 	@rtype: int
 	@returns: the first index that contains val, -1 if not found.
 	"""
+
 	def search(self, val):
 		index = 0
-		currentNode = self.firstByReference()
-		last = self.lastByReference()
+		if self.empty():
+			return -1
+		currentNode = self.firstByReference()#self.retrieveByIndex(0)
+		last = self.lastByReference()#self.retrieveByIndex(self.length() - 1)
 		while currentNode is not last:
 			if currentNode.getValue() == val:
 				return index
 			index += 1
 			currentNode = currentNode.successor()
 		if currentNode is not None and currentNode.getValue() == val:
-				return index
+			return index
 		return -1
 
 	"""returns the root of the tree representing the list
@@ -676,6 +589,7 @@ class AVLTreeList(object):
 	@rtype: AVLNode
 	@returns: the root, None if the list is empty
 	"""
+
 	def getRoot(self):
 
 		return self.root if not self.empty() else None
@@ -793,30 +707,127 @@ class AVLTreeList(object):
 				raise RuntimeError
 			self.setRoot(node)
 
-
-'''
+	'''
 	def specialRotation(self, axisNode):
 		toPoint = axisNode.checkParentSide()
 		if toPoint == -1 :
 			self.specialRotationRight(axisNode)
 		elif toPoint == 1 :
 			self.specialRotationLeft(axisNode)
-
-
+	
+	
 	def specialRotationRight(self, axisNode):
 		b = axisNode.getRight()  ##b
-
-
+	
+	
 		zPar = self.getParent()
 		axisNode.setRight(axisParent)
 		self.setLeft(b)
 		axisNode.setRight(self)
 		axisNode.setParent(zPar)
-
+	
 		self.recalculate()
 		axisNode.recalculate()
 		axisNode.recalculate()
-'''
+	'''
+
+	"""splits the list at the i'th index
+	Runtime: O(log(n)), as we saw in class.
+	@type i: int
+	@pre: 0 <= i < self.length()
+	@param i: The intended index in the list according to whom we split
+	@rtype: list
+	@returns: a list [left, val, right], where left is an AVLTreeList representing the list until index i-1,
+	right is an AVLTreeList representing the list from index i+1, and val is the value at the i'th index.
+	@see: joinTreeList
+	"""
+
+	def split(self, i):
+		pivot = self.retrieveByIndex(i)
+		leftTree, rightTree = AVLTreeList(), AVLTreeList()
+		# Using lazy evaluation, set left tree root to left child of pivot and detach it from parent
+		pivot.getLeft().isRealNode() and (leftTree.setRoot(pivot.getLeft()) or leftTree.getRoot().setParent(None))
+		# And do the same for right child of pivot.
+		# This behavior is ideal for performance, but must be overridden for experiment #2.
+		pivot.getRight().isRealNode() and (rightTree.setRoot(pivot.getRight()) or rightTree.getRoot().setParent(None))
+		ascendingPointer = pivot
+		leftJoin = []
+		rightJoin = []
+		while ascendingPointer is not self.root:
+			parentSide = ascendingPointer.checkParentSide()
+			par = ascendingPointer.getParent()
+			siblingRoot = par.getLeft() if parentSide == 1 else par.getRight()
+			siblingTree = AVLTreeList()
+			siblingTree.setRoot(siblingRoot)
+			# Detach from old parents
+			siblingTree.getRoot() and siblingTree.getRoot().setParent(None)
+
+			if siblingTree.length() > 0:
+				siblingTree.firstNode = siblingTree.retrieveByIndex(0)
+				siblingTree.lastNode = siblingTree.retrieveByIndex(siblingTree.length() - 1)
+			else:
+				siblingTree.firstNode = None
+				siblingTree.lastNode = None
+
+			if parentSide == 1:
+				leftJoin.append([siblingTree, par])
+			else:
+				rightJoin.append([siblingTree, par])
+
+			ascendingPointer = ascendingPointer.getParent()
+
+		joinTreeList(leftTree, leftJoin, True)
+		joinTreeList(rightTree, rightJoin, False)
+
+		if leftTree.empty():
+			leftTree.firstNode = None
+			leftTree.lastNode = None
+		else:
+			leftTree.firstNode = leftTree.retrieveByIndex(0)
+			leftTree.lastNode = leftTree.retrieveByIndex(leftTree.length() - 1)
+		if rightTree.empty():
+			rightTree.firstNode = None
+			rightTree.lastNode = None
+		else:
+			rightTree.firstNode = rightTree.retrieveByIndex(0)
+			rightTree.lastNode = rightTree.retrieveByIndex(rightTree.length() - 1)
+
+		return [leftTree, pivot.getValue(), rightTree]
+
+
+
+	"""concatenates lst to self
+
+	@type lst: AVLTreeList
+	@param lst: a list to be concatenated after self
+	@rtype: int
+	@returns: the absolute value of the difference between the height of the AVL trees joined
+	@post: lst is mutated and should not be reused!
+	"""
+	def concat(self, lst):
+
+
+		EMPTY_TREE_HEIGHT = -1
+		selfHeight = self.root.getHeight() if not self.empty() else EMPTY_TREE_HEIGHT
+		lstHeight = lst.root.getHeight() if not lst.empty() else EMPTY_TREE_HEIGHT
+		heightDiff = abs(selfHeight - lstHeight)
+		if self.empty():
+			self.setRoot(lst.root)
+			self.firstNode = lst.firstNode
+			self.lastNode = lst.lastNode
+			return heightDiff
+		if lst.empty():
+			return heightDiff
+		x = self.lastByReference()
+		self.delete(self.length()-1)
+
+
+		join(self, lst, x)
+
+		self.firstNode = self.retrieveByIndex(0)
+		self.lastNode = self.retrieveByIndex(self.length() - 1)
+
+		return heightDiff
 
 
 def join(leftTree, rightTree, connectingNode):
