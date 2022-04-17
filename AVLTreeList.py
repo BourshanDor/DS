@@ -308,7 +308,7 @@ class AVLTreeList(object):
 	@rtype: int
 	@returns: the number of rebalancing operations due to AVL rebalancing
 	"""
-	def insert(self, i, val):
+	def insert(self, i, val, callByhandleEmptyJoin = False):
 		rotationCounter = 0
 		insertionNode = AVLNode(val)
 		if self.empty() or isinstance(self.root, AVLVirtualNode):
@@ -316,10 +316,11 @@ class AVLTreeList(object):
 			self.lastNode = insertionNode
 			self.firstNode = insertionNode
 			return rotationCounter
+
 		if i == self.length():
 			self.lastNode = insertionNode
 		if i == 0:
-			first = self.firstByReference()
+			first = self.retrieveByIndex(0) if callByhandleEmptyJoin else self.firstByReference()
 			insertionNode.setParent(first)
 			first.setLeft(insertionNode)
 			self.firstNode = insertionNode
@@ -762,12 +763,12 @@ class AVLTreeList(object):
 			# Detach from old parents
 			siblingTree.getRoot() and siblingTree.getRoot().setParent(None)
 
-			if siblingTree.length() > 0:
-				siblingTree.firstNode = siblingTree.retrieveByIndex(0)
-				siblingTree.lastNode = siblingTree.retrieveByIndex(siblingTree.length() - 1)
-			else:
-				siblingTree.firstNode = None
-				siblingTree.lastNode = None
+			# if siblingTree.length() > 0:
+			# 	siblingTree.firstNode = siblingTree.retrieveByIndex(0)
+			# 	siblingTree.lastNode = siblingTree.retrieveByIndex(siblingTree.length() - 1)
+			# else:
+			# 	siblingTree.firstNode = None
+			# 	siblingTree.lastNode = None
 
 			if parentSide == 1:
 				leftJoin.append([siblingTree, par])
@@ -888,15 +889,28 @@ def handleEmptyJoin(leftTree, rightTree, connectingNode):
 		if rightTree.empty():
 			leftTree.setRoot(connectingNode)
 			rightTree.setRoot(connectingNode)
+			# rightTree.firstNode = connectingNode
+			# rightTree.lastNode = connectingNode
+			# leftTree.firstNode = connectingNode
+			# leftTree.lastNode = connectingNode
 			return True
-		rightTree.insert(0, connectingNode.getValue())
-		rightTree.balanceTree(rightTree.retrieveByIndex(0))
+		rightTree.insert(0, connectingNode.getValue(),True)
+		rightTree.balanceTree(rightTree.firstNode)
 		leftTree.setRoot(rightTree.root)
+		# rightTree.firstNode = connectingNode
+		# rightTree.lastNode = retrieveByIndex(rightTree.length() - 1)
+		# leftTree.firstNode = rightTree.firstNode
+		# leftTree.lastNode = rightTree.lastNode
+
 		return True
 	elif rightTree.empty():
 		leftTree.insert(leftTree.length(), connectingNode.getValue())
-		leftTree.balanceTree(leftTree.retrieveByIndex(leftTree.length()-1))
+		leftTree.balanceTree(leftTree.lastNode)
 		rightTree.setRoot(leftTree.root)
+		# leftTree.firstNode = retrieveByIndex(0)
+		# leftTree.lastNode = connectingNode
+		# rightTree.firstNode = leftTree.firstNode
+		# rightTree.lastNode = leftTree.lastNode
 		return True
 	return False
 
