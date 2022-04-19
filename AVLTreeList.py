@@ -4,7 +4,7 @@
 # id2      - ***REMOVED***
 # name2    - Jonathan Yahav
 
-from printree import *
+# from printree import *
 
 """A class representing a node in an AVL tree"""
 
@@ -31,10 +31,10 @@ class AVLNode(object):
 			self.size = 1
 		self.parent = None
 
-	"""printable representation of the AVLNode.
-	"""
-	def __repr__(self):
-		return self.getValue() or "#"
+	# """printable representation of the AVLNode.
+	# """
+	# def __repr__(self):
+	# 	return self.getValue() or "#"
 
 	"""returns the left child
 	
@@ -271,11 +271,11 @@ class AVLTreeList(object):
 		self.lastNode = None
 
 
-	def __repr__(self):
-		out = ""
-		for row in printree(self.root, False):  # need printree.py file
-			out = out + row + "\n"
-		return out
+	# def __repr__(self):
+	# 	out = ""
+	# 	for row in printree(self.root, False):  # need printree.py file
+	# 		out = out + row + "\n"
+	# 	return out
 
 	def append(self, val):
 		return self.insert(self.length(), str(val))
@@ -494,7 +494,6 @@ class AVLTreeList(object):
 	"""
 	def first(self):
 		return self.firstNode.getValue() if self.firstNode is not None else None
-		#return self.firstByReference().getValue() if self.firstByReference() is not None else None
 
 	"""
 	Returns a reference to the first item in the list, or None if the list is empty.
@@ -505,12 +504,7 @@ class AVLTreeList(object):
 		if self.empty() or isinstance(self.root, AVLVirtualNode):
 			return None
 		return self.firstNode
-		# if self.empty() or isinstance(self.root, AVLVirtualNode):
-		# 	return None
-		# next_left = self.root.getLeft()
-		# while next_left.isRealNode():
-		# 	next_left = next_left.getLeft()
-		# return next_left.getParent()
+
 
 	"""returns the value of the last item in the list
 	Runtime: O(log(n))
@@ -519,7 +513,7 @@ class AVLTreeList(object):
 	"""
 	def last(self):
 		return self.lastNode.getValue() if self.lastNode is not None else None
-		#return self.lastByReference().getValue() if self.lastByReference() is not None else None
+
 
 	"""
 	Returns a reference to the last item in the list, or None if the list is empty.
@@ -530,12 +524,7 @@ class AVLTreeList(object):
 		 if self.empty() or isinstance(self.root, AVLVirtualNode):
 		 	return None
 		 return self.lastNode
-		# if self.empty() or isinstance(self.root, AVLVirtualNode):
-		# 	return None
-		# next_right = self.root.getRight()
-		# while next_right.isRealNode():
-		# 	next_right = next_right.getRight()
-		# return next_right.getParent()
+
 
 	"""returns an array representing list 
 
@@ -574,8 +563,8 @@ class AVLTreeList(object):
 		index = 0
 		if self.empty():
 			return -1
-		currentNode = self.firstByReference()#self.retrieveByIndex(0)
-		last = self.lastByReference()#self.retrieveByIndex(self.length() - 1)
+		currentNode = self.firstByReference()
+		last = self.lastByReference()
 		while currentNode is not last:
 			if currentNode.getValue() == val:
 				return index
@@ -708,41 +697,6 @@ class AVLTreeList(object):
 				raise RuntimeError
 			self.setRoot(node)
 
-	'''
-	def specialRotation(self, axisNode):
-		toPoint = axisNode.checkParentSide()
-		if toPoint == -1 :
-			self.specialRotationRight(axisNode)
-		elif toPoint == 1 :
-			self.specialRotationLeft(axisNode)
-	
-	
-	def specialRotationRight(self, axisNode):
-		b = axisNode.getRight()  ##b
-	
-	
-		zPar = self.getParent()
-		axisNode.setRight(axisParent)
-		self.setLeft(b)
-		axisNode.setRight(self)
-		axisNode.setParent(zPar)
-	
-		self.recalculate()
-		axisNode.recalculate()
-		axisNode.recalculate()
-	'''
-
-	"""splits the list at the i'th index
-	Runtime: O(log(n)), as we saw in class.
-	@type i: int
-	@pre: 0 <= i < self.length()
-	@param i: The intended index in the list according to whom we split
-	@rtype: list
-	@returns: a list [left, val, right], where left is an AVLTreeList representing the list until index i-1,
-	right is an AVLTreeList representing the list from index i+1, and val is the value at the i'th index.
-	@see: joinTreeList
-	"""
-
 	def split(self, i):
 		pivot = self.retrieveByIndex(i)
 		leftTree, rightTree = AVLTreeList(), AVLTreeList()
@@ -762,13 +716,6 @@ class AVLTreeList(object):
 			siblingTree.setRoot(siblingRoot)
 			# Detach from old parents
 			siblingTree.getRoot() and siblingTree.getRoot().setParent(None)
-
-			# if siblingTree.length() > 0:
-			# 	siblingTree.firstNode = siblingTree.retrieveByIndex(0)
-			# 	siblingTree.lastNode = siblingTree.retrieveByIndex(siblingTree.length() - 1)
-			# else:
-			# 	siblingTree.firstNode = None
-			# 	siblingTree.lastNode = None
 
 			if parentSide == 1:
 				leftJoin.append([siblingTree, par])
@@ -889,28 +836,15 @@ def handleEmptyJoin(leftTree, rightTree, connectingNode):
 		if rightTree.empty():
 			leftTree.setRoot(connectingNode)
 			rightTree.setRoot(connectingNode)
-			# rightTree.firstNode = connectingNode
-			# rightTree.lastNode = connectingNode
-			# leftTree.firstNode = connectingNode
-			# leftTree.lastNode = connectingNode
 			return True
 		rightTree.insert(0, connectingNode.getValue(),True)
 		rightTree.balanceTree(rightTree.firstNode)
 		leftTree.setRoot(rightTree.root)
-		# rightTree.firstNode = connectingNode
-		# rightTree.lastNode = retrieveByIndex(rightTree.length() - 1)
-		# leftTree.firstNode = rightTree.firstNode
-		# leftTree.lastNode = rightTree.lastNode
-
 		return True
 	elif rightTree.empty():
 		leftTree.insert(leftTree.length(), connectingNode.getValue())
 		leftTree.balanceTree(leftTree.lastNode)
 		rightTree.setRoot(leftTree.root)
-		# leftTree.firstNode = retrieveByIndex(0)
-		# leftTree.lastNode = connectingNode
-		# rightTree.firstNode = leftTree.firstNode
-		# rightTree.lastNode = leftTree.lastNode
 		return True
 	return False
 
